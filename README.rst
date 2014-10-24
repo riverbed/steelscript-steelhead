@@ -1,5 +1,5 @@
 Riverbed SteelScript for SteelHead
-=================================================
+==================================
 
 This package provides device specific bindings for interacting
 with Riverbed SteelHead devices as part of the Riverbed
