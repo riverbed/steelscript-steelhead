@@ -10,6 +10,7 @@ from steelscript.common.interaction.model import model, Model
 
 import re
 
+
 @model
 class FlowsModel(Model):
     """
@@ -54,7 +55,6 @@ class FlowsModel(Model):
                                         'secs': match.group(13)}}
         return flow_info_dict
 
-
     def show_flows(self, type='all'):
         """
         Method to show Flows on a SteelHead
@@ -86,7 +86,8 @@ class FlowsModel(Model):
                     'forwarded': {'all': '1', 'v4': '2', 'v6': '3'},
                     'half_closed optimized':
                         {'all': '11', 'v4': '22', 'v6': '33'},
-                    'half_opened optimized': {'all': '1', 'v4': '2', 'v6': '3'},
+                    'half_opened optimized':
+                        {'all': '1', 'v4': '2', 'v6': '3'},
                     'optimized': {'all': '1', 'v4': '2', 'v6': '3'},
                     'packet_mode optimized':
                         {'all': '11', 'v4': '22', 'v6': '33'},
@@ -186,4 +187,3 @@ class FlowsModel(Model):
         output = {'flows_list': flows_list,
                   'flows_summary': flows_summary_dict}
         return output
-

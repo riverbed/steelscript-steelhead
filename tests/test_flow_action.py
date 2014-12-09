@@ -6,12 +6,11 @@ from __future__ import unicode_literals
 import mock
 import pytest
 
-from steelscript.common.interaction import action, uidelegation
-from steelscript.steelhead.features.flows.v8_5.action import FlowsAction as CommonFlows
+from steelscript.common.interaction import action
 
 
-SHOW_FLOWS_PASSTHROUGH = """\
-T  Source                Destination           App     Rdn Since              
+SHOW_FLOWS_PT = """\
+T  Source                Destination           App     Rdn Since
 --------------------------------------------------------------------------------
 PI 10.3.2.54:40097       10.190.174.120:443    TCP     2014/01/02 06:00:50
 PI 10.3.2.23:52618       10.190.174.121:443    TCP     2014/01/02 14:06:09
@@ -36,7 +35,7 @@ Total:                                     11     40      70
 """
 
 
-SHOW_FLOWS_PASSTHROUGH_PARSED = {
+SHOW_FLOWS_PT_PARSED = {
     'flows_list': [
         {'app': 'TCP',
          'destination ip': '10.190.174.120',
@@ -118,7 +117,7 @@ SHOW_FLOWS_PASSTHROUGH_PARSED = {
         'total': {u'all': u'11', u'v4': u'40', u'v6': u'70'}}
 }
 
-SHOW_FLOWS_OPTIMIZED = """\
+SHOW_FLOWS_OPT = """\
 T  Source                Destination           App     Rdn Since
 --------------------------------------------------------------------------------
 N  10.190.0.1:406        10.190.5.2:1003       UDPv4   99% 2014/02/10 23:58:01
@@ -143,7 +142,7 @@ Total:                                     11     40      70
 """
 
 
-SHOW_FLOWS_OPTIMIZED_PARSED = {
+SHOW_FLOWS_OPT_PARSED = {
     'flows_list': [
         {'app': 'UDPv4',
          'destination ip': '10.190.5.2',
@@ -234,22 +233,25 @@ SHOW_FLOWS_OPTIMIZED_PARSED = {
         'total': {u'all': u'11', u'v4': u'40', u'v6': u'70'}}
 }
 
+
 @pytest.yield_fixture
 def mock_cli():
-    with mock.patch('steelscript.common.interaction.model.Model.cli') as mock_cli:
+    with mock.patch('steelscript.common.interaction.model.Model.cli')\
+            as mock_cli:
         yield mock_cli
 
 
 def test_show_flows_passthrough(mock_cli):
     actor = action.Action.get(mock.Mock, feature="flows")
-    mock_cli.exec_command.return_value = SHOW_FLOWS_PASSTHROUGH
+    mock_cli.exec_command.return_value = SHOW_FLOWS_PT
     result = actor.show_flows_passthrough()
-    assert result['flows_list'] == SHOW_FLOWS_PASSTHROUGH_PARSED['flows_list']
-    assert result['flows_summary'] == SHOW_FLOWS_PASSTHROUGH_PARSED['flows_summary']
+    assert result['flows_list'] == SHOW_FLOWS_PT_PARSED['flows_list']
+    assert result['flows_summary'] == SHOW_FLOWS_PT_PARSED['flows_summary']
+
 
 def test_show_flows_optimized(mock_cli):
     actor = action.Action.get(mock.Mock, feature="flows")
-    mock_cli.exec_command.return_value = SHOW_FLOWS_OPTIMIZED
+    mock_cli.exec_command.return_value = SHOW_FLOWS_OPT
     result = actor.show_flows_optimized()
-    assert result['flows_list'] == SHOW_FLOWS_OPTIMIZED_PARSED['flows_list']
-    assert result['flows_summary'] == SHOW_FLOWS_OPTIMIZED_PARSED['flows_summary']
+    assert result['flows_list'] == SHOW_FLOWS_OPT_PARSED['flows_list']
+    assert result['flows_summary'] == SHOW_FLOWS_OPT_PARSED['flows_summary']

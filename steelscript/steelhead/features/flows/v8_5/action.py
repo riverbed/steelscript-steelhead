@@ -26,4 +26,3 @@ class CLI(uidelegation.CLI):
 
     def show_flows_passthrough(self):
             return self.model.show_flows(type="passthrough")
-

@@ -9,7 +9,6 @@ from __future__ import (unicode_literals, print_function, division,
 from steelscript.common.interaction.model import model, Model
 from steelscript.cmdline.parsers import cli_parse_basic
 
-import re
 
 @model
 class StatsModel(Model):
@@ -52,4 +51,3 @@ class StatsModel(Model):
         result = self.cli.exec_command(cmd, output_expected=True)
 
         return cli_parse_basic(result)
-

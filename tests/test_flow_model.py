@@ -6,7 +6,8 @@ from __future__ import unicode_literals
 import mock
 import pytest
 
-from steelscript.steelhead.features.flows.v8_5.model import FlowsModel as CommonFlows
+from steelscript.steelhead.features.flows.v8_5.model import FlowsModel\
+    as CommonFlows
 
 
 SHOW_FLOWS_ALL_OUTPUT = """\
@@ -162,6 +163,7 @@ def mock_cli(request):
     with mock.patch('steelscript.common.interaction.model.Model.cli') as cli:
         yield cli
 
+
 def test_show_flows(mock_cli):
     model = CommonFlows(mock.Mock(), cli=mock_cli)
     mock_cli.exec_command.return_value = SHOW_FLOWS_ALL_OUTPUT
@@ -169,4 +171,3 @@ def test_show_flows(mock_cli):
     assert result['flows_list'] == SHOW_FLOWS_ALL_PARSED_DICT['flows_list']
     assert result['flows_summary'] == \
         SHOW_FLOWS_ALL_PARSED_DICT['flows_summary']
-

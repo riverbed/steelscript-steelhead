@@ -6,7 +6,8 @@ from __future__ import unicode_literals
 import mock
 import pytest
 
-from steelscript.steelhead.features.stats.v8_5.model import StatsModel as CommonStats
+from steelscript.steelhead.features.stats.v8_5.model import StatsModel\
+    as CommonStats
 
 
 SHOW_STATS_ALL_OUTPUT = """\
@@ -18,7 +19,6 @@ Data Reduction Peak Time: 2014/12/09 08:39:35
 Capacity Increase:        15.4 X
 """
 
-
 SHOW_STATS_ALL_PARSED_DICT = {
     'wan data': '4.2 MB',
     'lan data': '66 MB',
@@ -28,10 +28,12 @@ SHOW_STATS_ALL_PARSED_DICT = {
     'capacity increase': '15.4 X'
 }
 
+
 @pytest.yield_fixture
 def mock_cli(request):
     with mock.patch('steelscript.common.interaction.model.Model.cli') as cli:
         yield cli
+
 
 def test_show_stats(mock_cli):
     model = CommonStats(mock.Mock(), cli=mock_cli)

@@ -22,4 +22,3 @@ class CLI(uidelegation.CLI):
     Kauai Reporting CLI Delegatee
     """
     pass
-

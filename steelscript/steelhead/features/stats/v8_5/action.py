@@ -14,6 +14,7 @@ class FlowsAction(action.Action):
     """
     Kauai Flows Actions for SteelHead product
     """
+    pass
 
 
 class CLI(uidelegation.CLI):
