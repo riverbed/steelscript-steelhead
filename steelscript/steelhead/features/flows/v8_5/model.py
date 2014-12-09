@@ -1,7 +1,8 @@
-# -*- coding: utf-8 -*-
+# Copyright (c) 2014 Riverbed Technology, Inc.
 #
-# Copyright 2014 Riverbed Technology, Inc.
-# All Rights Reserved. Confidential.
+# This software is licensed under the terms and conditions of the MIT License
+# accompanying the software ("License").  This software is distributed "AS IS"
+# as set forth in the License.
 
 from __future__ import (unicode_literals, print_function, division,
                         absolute_import)
@@ -9,6 +10,7 @@ from __future__ import (unicode_literals, print_function, division,
 from steelscript.common.interaction.model import model, Model
 
 import re
+import ipaddress
 
 
 @model
@@ -17,7 +19,7 @@ class FlowsModel(Model):
     Kauai Flows model for the SteelHead product
     """
 
-    def parse_flow_summary(self, output):
+    def _parse_flow_summary(self, output):
         # group 1
         type_pattern = "([a-zA-Z]+)"
         # group 2-5 (src/dst)
@@ -40,19 +42,20 @@ class FlowsModel(Model):
         match = regex.search(output)
         if match:
             flow_info_dict = dict()
-            flow_info_dict = {'type': match.group(1),
-                              'source ip': match.group(2),
-                              'source port': match.group(3),
-                              'destination ip': match.group(4),
-                              'destination port': match.group(5),
-                              'app': match.group(6),
-                              'percent': match.group(7),
-                              'since': {'year': match.group(8),
-                                        'month': match.group(9),
-                                        'day': match.group(10),
-                                        'hour': match.group(11),
-                                        'min': match.group(12),
-                                        'secs': match.group(13)}}
+            flow_info_dict = {
+                'type': match.group(1),
+                'source ip': ipaddress.ip_address(match.group(2)),
+                'source port': match.group(3),
+                'destination ip': ipaddress.ip_address(match.group(4)),
+                'destination port': match.group(5),
+                'app': match.group(6),
+                'percent': match.group(7),
+                'since': {'year': match.group(8),
+                          'month': match.group(9),
+                          'day': match.group(10),
+                          'hour': match.group(11),
+                          'min': match.group(12),
+                          'secs': match.group(13)}}
         return flow_info_dict
 
     def show_flows(self, type='all'):
@@ -67,7 +70,7 @@ class FlowsModel(Model):
         :return: dictionary {
                 'flows_list': [
                     {'app': 'UDPv4',
-                    'destination ip': '10.190.5.2',
+                    'destination ip': IPv4Address(u'10.190.5.2'),
                     'destination port': '1003',
                     'percent': '99',
                     'since': {'day': '10',
@@ -76,7 +79,7 @@ class FlowsModel(Model):
                               'month': '02',
                               'secs': '01',
                               'year': '2014'},
-                    'source ip': '10.190.0.1',
+                    'source ip': IPv4Address(u'10.190.0.1'),
                     'source port': '406',
                     'type': 'N'},...],
                 'flows_summary': {
@@ -160,7 +163,7 @@ class FlowsModel(Model):
                 continue
 
             # Parse connections/flows
-            flow_info_dict = self.parse_flow_summary(line)
+            flow_info_dict = self._parse_flow_summary(line)
             if flow_info_dict:
                 flows_list.append(flow_info_dict)
                 continue

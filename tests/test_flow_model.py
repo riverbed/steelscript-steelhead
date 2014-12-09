@@ -2,9 +2,12 @@
 #
 # Copyright 2014 Riverbed Technology, Inc.
 # All Rights Reserved. Confidential.
-from __future__ import unicode_literals
+from __future__ import (absolute_import, unicode_literals, print_function,
+                        division)
+
 import mock
 import pytest
+from ipaddress import IPv4Address
 
 from steelscript.steelhead.features.flows.v8_5.model import FlowsModel\
     as CommonFlows
@@ -54,7 +57,7 @@ Total:                                     11     40      70
 SHOW_FLOWS_ALL_PARSED_DICT = {
     'flows_list': [
         {'app': 'UDPv4',
-         'destination ip': '10.190.5.2',
+         'destination ip': IPv4Address(u'10.190.5.2'),
          'destination port': '1003',
          'percent': '99',
          'since': {'day': '10',
@@ -63,11 +66,11 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'month': '02',
                    'secs': '01',
                    'year': '2014'},
-         'source ip': '10.190.0.1',
+         'source ip': IPv4Address(u'10.190.0.1'),
          'source port': '406',
          'type': 'N'},
         {'app': 'SRDF_V2',
-         'destination ip': '192.168.5.1',
+         'destination ip': IPv4Address(u'192.168.5.1'),
          'destination port': '80',
          'percent': '11',
          'since': {'day': '01',
@@ -76,11 +79,11 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                     'month': '02',
                     'secs': '01',
                     'year': '2014'},
-         'source ip': '192.168.0.1',
+         'source ip': IPv4Address(u'192.168.0.1'),
          'source port': '80',
          'type': 'O'},
         {'app': 'CIFS',
-         'destination ip': '192.168.221.1',
+         'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '1080',
          'percent': '0',
          'since': {'day': '01',
@@ -89,11 +92,11 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'month': '02',
                    'secs': '01',
                    'year': '2014'},
-         'source ip': '192.168.221.1',
+         'source ip': IPv4Address(u'192.168.221.1'),
          'source port': '1080',
          'type': 'O'},
         {'app': 'MAPI',
-         'destination ip': '192.168.221.1',
+         'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '443',
          'percent': '99',
          'since': {'day': '01',
@@ -102,11 +105,11 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'month': '02',
                    'secs': '01',
                    'year': '2014'},
-         'source ip': '192.168.221.1',
+         'source ip': IPv4Address(u'192.168.221.1'),
          'source port': '443',
          'type': 'O'},
         {'app': 'TCPv4',
-         'destination ip': '192.168.221.1',
+         'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '5543',
          'percent': '99',
          'since': {'day': '10',
@@ -115,11 +118,11 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'month': '02',
                    'secs': '01',
                    'year': '2014'},
-         'source ip': '192.168.221.1',
+         'source ip': IPv4Address(u'192.168.221.1'),
          'source port': '1443',
          'type': 'N'},
         {'app': 'FTP-DAT',
-         'destination ip': '10.190.5.2',
+         'destination ip': IPv4Address(u'10.190.5.2'),
          'destination port': '2003',
          'percent': '59',
          'since': {'day': '01',
@@ -128,7 +131,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'month': '02',
                    'secs': '01',
                    'year': '2014'},
-         'source ip': '10.190.0.1',
+         'source ip': IPv4Address(u'10.190.0.1'),
          'source port': '1406',
          'type': 'N'}
     ],
