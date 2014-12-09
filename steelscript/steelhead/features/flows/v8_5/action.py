@@ -38,7 +38,7 @@ class CLI(uidelegation.CLI):
                             'month': '02',
                             'secs': '01',
                             'year': '2014'},
-                 'source ip': IPv4Address'10.190.0.1'),
+                 'source ip': IPv4Address('10.190.0.1'),
                  'source port': '406',
                  'type': 'N'},...],
             'flows_summary': {

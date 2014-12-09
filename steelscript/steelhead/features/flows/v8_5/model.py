@@ -28,14 +28,14 @@ class FlowsModel(Model):
         # group 6
         app_pattern = "(.+?)"
         # group 7 - this only shows up for optimized connections
-        percent_pattern = "(\d*)%*"
+        reduction_pattern = "(\d*)%*"
         # group 8-13
         # TODO: instaed of a date+time, this can be a string (pre_existing)
         since_pattern = "(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)"
 
         flow_pattern = "%s\s+%s\s+%s\s+%s\s+%s\s+%s\s*$" \
                        % (type_pattern, ipv4_port_pattern, ipv4_port_pattern,
-                          app_pattern, percent_pattern, since_pattern)
+                          app_pattern, reduction_pattern, since_pattern)
 
         flow_info_dict = None
         regex = re.compile(flow_pattern)
@@ -49,7 +49,7 @@ class FlowsModel(Model):
                 'destination ip': ipaddress.ip_address(match.group(4)),
                 'destination port': match.group(5),
                 'app': match.group(6),
-                'percent': match.group(7),
+                'reduction': match.group(7),
                 'since': {'year': match.group(8),
                           'month': match.group(9),
                           'day': match.group(10),
@@ -60,7 +60,9 @@ class FlowsModel(Model):
 
     def show_flows(self, type='all'):
         """
-        Method to show Flows on a SteelHead
+        Method to show Flows on a SteelHead.  Currently, some flow types are
+        not supported and will not be included in the output.  These types are
+        IPv6 and pre_existing connections.
 
         :param type: Optional parameter to select the type of Flows.  Valid
                      choices include all, optimized, passthrough, packet-mode,
@@ -72,7 +74,7 @@ class FlowsModel(Model):
                     {'app': 'UDPv4',
                     'destination ip': IPv4Address(u'10.190.5.2'),
                     'destination port': '1003',
-                    'percent': '99',
+                    'reduction': '99',
                     'since': {'day': '10',
                               'hour': '23',
                               'min': '58',

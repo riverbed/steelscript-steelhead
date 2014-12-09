@@ -1,7 +1,9 @@
-# -*- coding: utf-8 -*-
+# Copyright (c) 2014 Riverbed Technology, Inc.
 #
-# Copyright 2014 Riverbed Technology, Inc.
-# All Rights Reserved. Confidential.
+# This software is licensed under the terms and conditions of the MIT License
+# accompanying the software ("License").  This software is distributed "AS IS"
+# as set forth in the License.
+
 from __future__ import (absolute_import, unicode_literals, print_function,
                         division)
 
@@ -59,7 +61,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'UDPv4',
          'destination ip': IPv4Address(u'10.190.5.2'),
          'destination port': '1003',
-         'percent': '99',
+         'reduction': '99',
          'since': {'day': '10',
                    'hour': '23',
                    'min': '58',
@@ -72,7 +74,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'SRDF_V2',
          'destination ip': IPv4Address(u'192.168.5.1'),
          'destination port': '80',
-         'percent': '11',
+         'reduction': '11',
          'since': {'day': '01',
                     'hour': '00',
                     'min': '00',
@@ -85,7 +87,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'CIFS',
          'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '1080',
-         'percent': '0',
+         'reduction': '0',
          'since': {'day': '01',
                    'hour': '00',
                    'min': '20',
@@ -98,7 +100,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'MAPI',
          'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '443',
-         'percent': '99',
+         'reduction': '99',
          'since': {'day': '01',
                    'hour': '00',
                    'min': '21',
@@ -111,7 +113,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'TCPv4',
          'destination ip': IPv4Address(u'192.168.221.1'),
          'destination port': '5543',
-         'percent': '99',
+         'reduction': '99',
          'since': {'day': '10',
                    'hour': '23',
                    'min': '56',
@@ -124,7 +126,7 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
         {'app': 'FTP-DAT',
          'destination ip': IPv4Address(u'10.190.5.2'),
          'destination port': '2003',
-         'percent': '59',
+         'reduction': '59',
          'since': {'day': '01',
                    'hour': '00',
                    'min': '00',
