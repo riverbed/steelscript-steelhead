@@ -15,7 +15,8 @@ from __future__ import (absolute_import, unicode_literals, print_function,
 
 from steelscript.common.app import Application
 from steelscript.steelhead.core import CLIAuth, SteelHead
-from steelscript.common import Action, Model
+from steelscript.common.interaction import action, model
+
 
 class ShowVersionApp(Application):
 
@@ -44,19 +45,17 @@ class ShowVersionApp(Application):
                        password=self.options.password)
         sh = SteelHead(host=self.options.host, auth=auth)
 
-        ## Using the model class
-        flows_model = Model.get(sh, feature='flows')
+        # Using the model class
+        flows_model = model.Model.get(sh, feature='flows')
         print("\nAll Flows")
         print(flows_model.show_flows('all'))
 
-        ## Using the action class
-        flows_action = Action.get(sh, feature='flows')
+        # Using the action class
+        flows_action = action.Action.get(sh, feature='flows')
         print("\nOptimized")
         print(flows_action.show_flows_optimized())
         print("\nPassthrough")
         print(flows_action.show_flows_passthrough())
-
-        print (sh.cli.exec_command("show version"))
 
 if __name__ == '__main__':
     ShowVersionApp().run()

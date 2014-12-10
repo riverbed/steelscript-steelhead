@@ -7,6 +7,8 @@
 from __future__ import (unicode_literals, print_function, division,
                         absolute_import)
 
+import re
+
 from steelscript.common.interaction.model import model, Model
 from steelscript.cmdline.parsers import cli_parse_basic
 
@@ -49,6 +51,17 @@ class StatsModel(Model):
             cmd = cmd + " " + type
         if frequency is not None:
             cmd = cmd + " " + frequency
-        result = self.cli.exec_command(cmd, output_expected=True)
 
-        return cli_parse_basic(result)
+        result = self.cli.exec_command(cmd, output_expected=True)
+        result.strip()
+        parsed = cli_parse_basic(result)
+
+        pct_pattern = "(\d+) %"
+        regex = re.compile(pct_pattern)
+
+        for stat in parsed:
+            match = regex.search(parsed[stat])
+            if match:
+                parsed[stat] = match.group(1)
+
+        return parsed

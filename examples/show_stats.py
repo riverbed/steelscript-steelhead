@@ -7,7 +7,7 @@
 
 """
 This script presents a python example of logging into a steelhead
-appliance to print the current connections (flows).
+appliance to print the current bandwidth statistics.
 """
 
 from __future__ import (absolute_import, unicode_literals, print_function,
@@ -15,7 +15,8 @@ from __future__ import (absolute_import, unicode_literals, print_function,
 
 from steelscript.common.app import Application
 from steelscript.steelhead.core import CLIAuth, SteelHead
-from steelscript.common import Model
+from steelscript.common.interaction.model import Model
+
 
 class ShowVersionApp(Application):
 
@@ -44,10 +45,12 @@ class ShowVersionApp(Application):
                        password=self.options.password)
         sh = SteelHead(host=self.options.host, auth=auth)
 
-        ## Using the model class
+        # Using the model class
         print("\nStats")
         stats_model = Model.get(sh, feature='stats')
-        print(stats_model.show_stats_bandwidth('all', 'bi-directional', '5min'))
+        print(stats_model.show_stats_bandwidth('all',
+                                               'bi-directional',
+                                               '5min'))
 
 if __name__ == '__main__':
     ShowVersionApp().run()
