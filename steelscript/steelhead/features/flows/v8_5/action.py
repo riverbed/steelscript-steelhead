@@ -17,7 +17,7 @@ class FlowsAction(action.Action):
     """
 
 
-class CLI(uidelegation.CLI):
+class CLI(uidelegation.CLIDelegatee):
     """
     Kauai Flows CLI Delegatee
     """
