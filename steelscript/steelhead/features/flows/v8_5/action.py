@@ -30,8 +30,8 @@ class CLI(uidelegation.CLIDelegatee):
             'flows_list': [
                 {'app': 'UDPv4',
                  'destination ip': IPv4Address('10.190.5.2'),
-                 'destination port': '1003',
-                 'percent': '99',
+                 'destination port': 1003,
+                 'percent': 99,
                  'since': {'day': '10',
                            'hour': '23',
                             'min': '58',
@@ -39,16 +39,16 @@ class CLI(uidelegation.CLIDelegatee):
                             'secs': '01',
                             'year': '2014'},
                  'source ip': IPv4Address('10.190.0.1'),
-                 'source port': '406',
+                 'source port': 406,
                  'type': 'N'},...],
             'flows_summary': {
-                'established optimized': {'all': '1', 'v4': '2', 'v6': '3'},
-                'packet_mode optimized': {'all': '11', 'v4': '22', 'v6': '33'},
-                'rios only': {'all': '1', 'v4': '3', 'v6': '3'},
-                'rios scps': {'all': '1', 'v4': '2', 'v6': '3'},
-                'scps only': {'all': '11', 'v4': '22', 'v6': '33'},
-                'tcp proxy': {'all': '1', 'v4': '2', 'v6': '3'},
-                'total': {u'all': u'11', u'v4': u'40', u'v6': u'70'}}}
+                'established optimized': {'all': 1, 'v4': 2, 'v6': 3},
+                'packet_mode optimized': {'all': 11, 'v4': 22, 'v6': 33},
+                'rios only': {'all': 1, 'v4': 3, 'v6': 3},
+                'rios scps': {'all': 1, 'v4': 2, 'v6': 3},
+                'scps only': {'all': 11, 'v4': 22, 'v6': 33},
+                'tcp proxy': {'all': 1, 'v4': 2, 'v6': 3},
+                'total': {'all': 11', v4: 40, 'v6': 70}}}
         """
 
         return self.model.show_flows(type="optimized")
@@ -61,8 +61,7 @@ class CLI(uidelegation.CLIDelegatee):
             'flows_list': [
                 {'app': 'TCP',
                  'destination ip': IPv4Address('10.190.174.120'),
-                 'destination port': '443',
-                 'percent': '',
+                 'destination port': 443,
                  'since': {'day': '02',
                            'hour': '06',
                            'min': '00',
@@ -70,21 +69,20 @@ class CLI(uidelegation.CLIDelegatee):
                            'secs': '50',
                            'year': '2014'},
                  'source ip': IPv4Address('10.3.2.54'),
-                 'source port': '40097',
+                 'source port': 40097,
                  'type': 'PI'}...],
              'flows_summary': {
-                 'forwarded': {'all': '1', 'v4': '2', 'v6': '3'},
-                 'passthrough': {'all': '11', 'v4': '22', 'v6': '33'},
-                 'passthrough intentional': {'all': '1', 'v4': '2', 'v6': '3'},
-                 'passthrough unintentional':
-                     {'all': '11', 'v4': '22', 'v6': '33'},
-                 'passthrough unintentional packet_mode': {'all': '11',
-                                                           'v4': '22',
-                                                           'v6': '33'},
-                 'passthrough unintentional terminated': {'all': '1',
-                                                          'v4': '2',
-                                                          'v6': '3'},
-                 'total': {u'all': u'11', u'v4': u'40', u'v6': u'70'}}}
+                 'forwarded': {'all': 1, 'v4': 2, 'v6': 3},
+                 'passthrough': {'all': 11, 'v4': 22, 'v6': 33},
+                 'passthrough intentional': {'all': 1, 'v4': 2, 'v6': 3},
+                 'passthrough unintentional': {'all': 11, 'v4': 22, 'v6': 33},
+                 'passthrough unintentional packet_mode': {'all': 11,
+                                                           'v4': 22,
+                                                           'v6': 33},
+                 'passthrough unintentional terminated': {'all': 1,
+                                                          'v4': 2,
+                                                          'v6': 3},
+                 'total': {'all': 11, 'v4': 40, 'v6': 70}}}
         """
 
         return self.model.show_flows(type="passthrough")

@@ -45,17 +45,18 @@ class FlowsModel(Model):
             flow_info_dict = {
                 'type': match.group(1),
                 'source ip': ipaddress.ip_address(match.group(2)),
-                'source port': match.group(3),
+                'source port': int(match.group(3)),
                 'destination ip': ipaddress.ip_address(match.group(4)),
-                'destination port': match.group(5),
+                'destination port': int(match.group(5)),
                 'app': match.group(6),
-                'reduction': match.group(7),
                 'since': {'year': match.group(8),
                           'month': match.group(9),
                           'day': match.group(10),
                           'hour': match.group(11),
                           'min': match.group(12),
                           'secs': match.group(13)}}
+            if match.group(7) is not '':
+                flow_info_dict['reduction'] = int(match.group(7))
         return flow_info_dict
 
     def show_flows(self, type='all'):
@@ -73,8 +74,8 @@ class FlowsModel(Model):
                 'flows_list': [
                     {'app': 'UDPv4',
                     'destination ip': IPv4Address(u'10.190.5.2'),
-                    'destination port': '1003',
-                    'reduction': '99',
+                    'destination port': 1003,
+                    'reduction': 99,
                     'since': {'day': '10',
                               'hour': '23',
                               'min': '58',
@@ -82,34 +83,30 @@ class FlowsModel(Model):
                               'secs': '01',
                               'year': '2014'},
                     'source ip': IPv4Address(u'10.190.0.1'),
-                    'source port': '406',
+                    'source port': 406,
                     'type': 'N'},...],
                 'flows_summary': {
-                    'denied': {'all': '1'},
-                    'discarded': {'all': '1'},
-                    'establishing': {'all': '1', 'v4': '2', 'v6': '3'},
-                    'forwarded': {'all': '1', 'v4': '2', 'v6': '3'},
-                    'half_closed optimized':
-                        {'all': '11', 'v4': '22', 'v6': '33'},
-                    'half_opened optimized':
-                        {'all': '1', 'v4': '2', 'v6': '3'},
-                    'optimized': {'all': '1', 'v4': '2', 'v6': '3'},
-                    'packet_mode optimized':
-                        {'all': '11', 'v4': '22', 'v6': '33'},
-                    'passthrough': {'all': '11', 'v4': '22', 'v6': '33'},
-                    'passthrough intentional':
-                        {'all': '1', 'v4': '2', 'v6': '3'},
+                    'denied': {'all': 1},
+                    'discarded': {'all': 1},
+                    'establishing': {'all': 1, 'v4': 2, 'v6': 3},
+                    'forwarded': {'all': 1, 'v4': 2, 'v6': 3},
+                    'half_closed optimized': {'all': 11, 'v4': 22, 'v6': 33},
+                    'half_opened optimized': {'all': 1, 'v4': 2, 'v6': 3},
+                    'optimized': {'all': '1', 'v4': 2, 'v6': 3},
+                    'packet_mode optimized': {'all': 11, 'v4': 22, 'v6': 33},
+                    'passthrough': {'all': 11, 'v4': 22, 'v6': 33},
+                    'passthrough intentional': {'all': 1, 'v4': 2, 'v6': 3},
                     'passthrough unintentional':
-                        {'all': '11', 'v4': '22', 'v6': '33'},
+                        {'all': 11, 'v4': 22, 'v6': 33},
                     'passthrough unintentional packet_mode':
-                        {'all': '11', 'v4': '22', 'v6': '33'},
+                        {'all': 11, 'v4': 22, 'v6': 33},
                     'passthrough unintentional terminated':
-                        {'all': '1', 'v4': '2', 'v6': '3'},
-                    'rios only': {'all': '1', 'v4': '3', 'v6': '3'},
-                    'rios scps': {'all': '1', 'v4': '2', 'v6': '3'},
-                    'scps only': {'all': '11', 'v4': '22', 'v6': '33'},
-                    'tcp proxy': {'all': '1', 'v4': '2', 'v6': '3'},
-                    'total': {'all': '1', 'v4': '2', 'v6': '3'}}
+                        {'all': 1, 'v4': 2, 'v6': 3},
+                    'rios only': {'all': 1, 'v4': 3, 'v6': 3},
+                    'rios scps': {'all': 1, 'v4': 2, 'v6': 3},
+                    'scps only': {'all': 11, 'v4': 22, 'v6': 33},
+                    'tcp proxy': {'all': 1, 'v4': 2, 'v6': 3},
+                    'total': {'all': 1, 'v4': 2, 'v6': 3}}
         """
 
         cmd = "show flows %s" % type
@@ -179,14 +176,14 @@ class FlowsModel(Model):
                     match = re.match('\s+(\d+)\s+(\d+)\s+(\d+)\s*$', items[1])
                     if match:
                         flows_summary_dict[summary_list[category]] = \
-                            {'all': match.group(1),
-                             'v4': match.group(2),
-                             'v6': match.group(3)}
+                            {'all': int(match.group(1)),
+                             'v4':  int(match.group(2)),
+                             'v6':  int(match.group(3))}
                         break
                     match = re.match('\s+(\d+)$', items[1])
                     if match:
                         flows_summary_dict[summary_list[category]] = \
-                            {'all': match.group(1)}
+                            {'all': int(match.group(1))}
                         break
 
         output = {'flows_list': flows_list,

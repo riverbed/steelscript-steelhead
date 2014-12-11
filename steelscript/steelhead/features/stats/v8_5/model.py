@@ -40,8 +40,8 @@ class StatsModel(Model):
         :return: dictionary {
                     'wan data': '5.4 GB',
                     'lan data': '6 GB',
-                    'data reduction': '10 %',
-                    'data reduction peak': '95 %',
+                    'data reduction': 10,
+                    'data reduction peak': 95,
                     'data reduction peak time': '2014/12/05 14:50:00',
                     'capacity increase': '1.1 X'}
         """
@@ -62,6 +62,6 @@ class StatsModel(Model):
         for stat in parsed:
             match = regex.search(parsed[stat])
             if match:
-                parsed[stat] = match.group(1)
+                parsed[stat] = int(match.group(1))
 
         return parsed
