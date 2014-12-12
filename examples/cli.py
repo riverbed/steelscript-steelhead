@@ -7,7 +7,7 @@
 
 """
 This script presents a python example of logging into a steelhead
-appliance to print a simple system version.
+appliance to show version, current connections (flows) and bandwidth statistics.
 """
 
 from __future__ import (absolute_import, unicode_literals, print_function,
@@ -17,10 +17,10 @@ import steelscript.steelhead.core.steelhead as steelhead
 
 from steelscript.common.app import Application
 
-class ShowVersionApp(Application):
+class SteelHeadCLIApp(Application):
 
     def add_options(self, parser):
-        super(ShowVersionApp, self).add_options(parser)
+        super(SteelHeadCLIApp, self).add_options(parser)
 
         parser.add_option('-H', '--host',
                           help='hostname or IP address')
@@ -28,7 +28,7 @@ class ShowVersionApp(Application):
         parser.add_option('-p', '--password', help="Password to use")
 
     def validate_args(self):
-        super(ShowVersionApp, self).validate_args()
+        super(SteelHeadCLIApp, self).validate_args()
 
         if not self.options.host:
             self.parser.error("Host name needs to be specified")
@@ -43,8 +43,23 @@ class ShowVersionApp(Application):
         auth = steelhead.CLIAuth(username=self.options.username,
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
-
+        
+        print ("\n*****Version**********\n")
         print (sh.cli.exec_command("show version"))
 
+        print ("\n*****Networking State**********\n")
+        print (sh.cli.exec_command("show interfaces aux"))
+        
+
+        print ("\n********All Current Flows*********\n")
+        print (sh.cli.exec_command("show flows all"))
+        print("\n********All Optimized Flows*********\n")
+        print(sh.cli.exec_command("show flows optimized"))
+        print("\n********All Passthrough Flows***********\n")
+        print(sh.cli.exec_command("show flows passthrough"))
+
+        print ("\n********Bandwidth Statistics*********\n")
+        print (sh.cli.exec_command("show stats bandwidth all bi-directional 5min"))
+
 if __name__ == '__main__':
-    ShowVersionApp().run()
+    SteelHeadCLIApp().run()
