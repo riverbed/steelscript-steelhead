@@ -9,7 +9,7 @@ from __future__ import (absolute_import, unicode_literals, print_function,
 
 import mock
 import pytest
-from ipaddress import IPv4Address
+from ipaddress import IPv4Address, IPv6Address
 
 from steelscript.steelhead.features.flows.v8_5.model import FlowsModel\
     as CommonFlows
@@ -24,6 +24,8 @@ O  192.168.221.1:1080    192.168.221.1:1080    CIFS     0% 2014/02/01 00:20:01
 O  192.168.221.1:443     192.168.221.1:443     MAPI    99% 2014/02/01 00:21:01
 N  192.168.221.1:1443    192.168.221.1:5543    TCPv4   99% 2014/02/10 23:56:01
 N  10.190.0.1:1406       10.190.5.2:2003       FTP-DAT 59% 2014/02/01 00:00:01
+N  [10::190:f0:1]:146    [10::190:e5:2]:203    FTP-DAT 20% 2014/02/01 10:10:11
+N  11.19.11.11:146       10.190.11.11:3003     UDPv4    0% pre_existing
 --------------------------------------------------------------------------------
                                            All    V4     V6
 ---------------------------------------------------------------
@@ -135,6 +137,27 @@ SHOW_FLOWS_ALL_PARSED_DICT = {
                    'year': '2014'},
          'source ip': IPv4Address('10.190.0.1'),
          'source port': 1406,
+         'type': 'N'},
+        {'app': 'FTP-DAT',
+         'destination ip': IPv6Address('10::190:e5:2'),
+         'destination port': 203,
+         'reduction': 20,
+         'since': {'day': '01',
+                   'hour': '10',
+                   'min': '10',
+                   'month': '02',
+                   'secs': '11',
+                   'year': '2014'},
+         'source ip': IPv6Address('10::190:f0:1'),
+         'source port': 146,
+         'type': 'N'},
+        {'app': 'UDPv4',
+         'destination ip': IPv4Address('10.190.11.11'),
+         'destination port': 3003,
+         'reduction': 0,
+         'since': {'pre_existing': True},
+         'source ip': IPv4Address('11.19.11.11'),
+         'source port': 146,
          'type': 'N'}
     ],
     'flows_summary': {

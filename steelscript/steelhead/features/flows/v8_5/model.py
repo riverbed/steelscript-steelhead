@@ -19,44 +19,61 @@ class FlowsModel(Model):
     Kauai Flows model for the SteelHead product
     """
 
+    def _parse_ip_addr(self, ip):
+        # IPv4 looks like 123.124.125.126:1234
+        # IPv6 looks like [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:1234
+        ip_pattern = "\[*([\w\.:]+)\]*:(\d+)"
+        ip_regex = re.compile(ip_pattern)
+        ip_match = ip_regex.search(ip)
+        if ip_match:
+            return (ipaddress.ip_address(ip_match.group(1)),
+                    int(ip_match.group(2)))
+
     def _parse_flow_summary(self, output):
         # group 1
         type_pattern = "([a-zA-Z]+)"
-        # group 2-5 (src/dst)
-        # TODO: need to handle IPv6
-        ipv4_port_pattern = "(\d+\.\d+\.\d+\.\d+):(\d+)"
+        # group 2-5 (src/dst) in IPv4 or IPv6 format
+        ip_pattern = "([\w\.\[\]:]+)"
         # group 6
         app_pattern = "(.+?)"
         # group 7 - this only shows up for optimized connections
         reduction_pattern = "(\d*)%*"
         # group 8-13
-        # TODO: instaed of a date+time, this can be a string (pre_existing)
-        since_pattern = "(\d+)\/(\d+)\/(\d+)\s+(\d+):(\d+):(\d+)"
+        # The Rdn Since value can be a date+time or the string pre_existing
+        since_pattern = "(pre_existing|\d+\/\d+\/\d+\s+\d+:\d+:\d+)"
 
         flow_pattern = "%s\s+%s\s+%s\s+%s\s+%s\s+%s\s*$" \
-                       % (type_pattern, ipv4_port_pattern, ipv4_port_pattern,
+                       % (type_pattern, ip_pattern, ip_pattern,
                           app_pattern, reduction_pattern, since_pattern)
 
         flow_info_dict = None
         regex = re.compile(flow_pattern)
         match = regex.search(output)
         if match:
+            src = self._parse_ip_addr(match.group(2))
+            dst = self._parse_ip_addr(match.group(3))
             flow_info_dict = dict()
             flow_info_dict = {
                 'type': match.group(1),
-                'source ip': ipaddress.ip_address(match.group(2)),
-                'source port': int(match.group(3)),
-                'destination ip': ipaddress.ip_address(match.group(4)),
-                'destination port': int(match.group(5)),
-                'app': match.group(6),
-                'since': {'year': match.group(8),
-                          'month': match.group(9),
-                          'day': match.group(10),
-                          'hour': match.group(11),
-                          'min': match.group(12),
-                          'secs': match.group(13)}}
-            if match.group(7):
-                flow_info_dict['reduction'] = int(match.group(7))
+                'source ip': src[0],
+                'source port': src[1],
+                'destination ip': dst[0],
+                'destination port': dst[1],
+                'app': match.group(4)}
+            if match.group(5):
+                flow_info_dict['reduction'] = int(match.group(5))
+            if match.group(6) == 'pre_existing':
+                flow_info_dict['since'] = {'pre_existing': True}
+            else:
+                date_time = match.group(6).split(' ')
+                datestring = date_time[0].split('/')
+                timestring = date_time[1].split(':')
+                flow_info_dict['since'] = {'year': datestring[0],
+                                           'month': datestring[1],
+                                           'day': datestring[2],
+                                           'hour': timestring[0],
+                                           'min': timestring[1],
+                                           'secs': timestring[2]}
         return flow_info_dict
 
     def show_flows(self, type='all'):
