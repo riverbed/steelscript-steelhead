@@ -46,14 +46,14 @@ class SteelHeadCLIApp(Application):
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-        print ("\n*****Version**********\n")
-        print (sh.cli.exec_command("show version"))
+        print("\n*****Version**********\n")
+        print(sh.cli.exec_command("show version"))
 
-        print ("\n*****Networking State**********\n")
-        print (sh.cli.exec_command("show interfaces aux"))
+        print("\n*****Networking State**********\n")
+        print(sh.cli.exec_command("show interfaces aux"))
 
-        print ("\n********All Current Flows*********\n")
-        print (sh.cli.exec_command("show flows all"))
+        print("\n********All Current Flows*********\n")
+        print(sh.cli.exec_command("show flows all"))
         print("\n********All Optimized Flows*********\n")
         print(sh.cli.exec_command("show flows optimized"))
         print("\n********All Passthrough Flows***********\n")

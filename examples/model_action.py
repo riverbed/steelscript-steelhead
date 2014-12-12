@@ -15,6 +15,7 @@ from __future__ import (absolute_import, unicode_literals, print_function,
 
 import steelscript.steelhead.core.steelhead as steelhead
 
+from pprint import pprint
 from steelscript.common.app import Application
 from steelscript.common.interaction.action import Action
 from steelscript.common.interaction.model import Model
@@ -47,29 +48,29 @@ class SteelHeadModelActionApp(Application):
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-        print ("\n*****Version**********\n")
+        print("\n*****Version**********\n")
         version_model = Model.get(sh, service='common')
-        print(version_model.show_version())
+        pprint(version_model.show_version())
 
-        print ("\n*****Networking State**********\n")
+        print("\n*****Networking State**********\n")
         networking_model = Model.get(sh, service='networking')
-        print (networking_model.show_interfaces("aux"))
+        pprint(networking_model.show_interfaces("aux"))
 
-        print ("\n********All Current Flows*********\n")
+        print("\n********All Current Flows*********\n")
         flows_model = Model.get(sh, feature='flows')
-        print(flows_model.show_flows('all'))
+        pprint(flows_model.show_flows('all'))
 
         # Use the Action class
         flows_action = Action.get(sh, feature='flows')
         print("\n********All Optimized Flows*********\n")
-        print(flows_action.show_flows_optimized())
+        pprint(flows_action.show_flows_optimized())
         print("\n********All Passthrough Flows***********\n")
-        print(flows_action.show_flows_passthrough())
+        pprint(flows_action.show_flows_passthrough())
 
         print ("\n********Bandwidth Statistics*********\n")
         stats_model = Model.get(sh, feature='stats')
-        print(stats_model.show_stats_bandwidth('all', 'bi-directional',
-                                               '5min'))
+        pprint(stats_model.show_stats_bandwidth('all', 'bi-directional',
+                                                '5min'))
 
 
 if __name__ == '__main__':
