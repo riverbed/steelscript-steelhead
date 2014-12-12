@@ -55,7 +55,7 @@ class FlowsModel(Model):
                           'hour': match.group(11),
                           'min': match.group(12),
                           'secs': match.group(13)}}
-            if match.group(7) is not '':
+            if match.group(7):
                 flow_info_dict['reduction'] = int(match.group(7))
         return flow_info_dict
 
