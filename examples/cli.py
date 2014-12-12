@@ -7,7 +7,8 @@
 
 """
 This script presents a python example of logging into a steelhead
-appliance to show version, current connections (flows) and bandwidth statistics.
+appliance to show version, networking state, current connections
+(flows) and bandwidth statistics.
 """
 
 from __future__ import (absolute_import, unicode_literals, print_function,
@@ -16,6 +17,7 @@ from __future__ import (absolute_import, unicode_literals, print_function,
 import steelscript.steelhead.core.steelhead as steelhead
 
 from steelscript.common.app import Application
+
 
 class SteelHeadCLIApp(Application):
 
@@ -43,13 +45,12 @@ class SteelHeadCLIApp(Application):
         auth = steelhead.CLIAuth(username=self.options.username,
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
-        
+
         print ("\n*****Version**********\n")
         print (sh.cli.exec_command("show version"))
 
         print ("\n*****Networking State**********\n")
         print (sh.cli.exec_command("show interfaces aux"))
-        
 
         print ("\n********All Current Flows*********\n")
         print (sh.cli.exec_command("show flows all"))
@@ -59,7 +60,8 @@ class SteelHeadCLIApp(Application):
         print(sh.cli.exec_command("show flows passthrough"))
 
         print ("\n********Bandwidth Statistics*********\n")
-        print (sh.cli.exec_command("show stats bandwidth all bi-directional 5min"))
+        print (sh.cli.exec_command("show stats bandwidth all "
+                                   "bi-directional 5min"))
 
 if __name__ == '__main__':
     SteelHeadCLIApp().run()

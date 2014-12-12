@@ -19,6 +19,7 @@ from steelscript.common.app import Application
 from steelscript.common.interaction.action import Action
 from steelscript.common.interaction.model import Model
 
+
 class SteelHeadModelActionApp(Application):
 
     def add_options(self, parser):
@@ -45,7 +46,7 @@ class SteelHeadModelActionApp(Application):
         auth = steelhead.CLIAuth(username=self.options.username,
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
-        
+
         print ("\n*****Version**********\n")
         version_model = Model.get(sh, service='common')
         print(version_model.show_version())
@@ -53,7 +54,6 @@ class SteelHeadModelActionApp(Application):
         print ("\n*****Networking State**********\n")
         networking_model = Model.get(sh, service='networking')
         print (networking_model.show_interfaces("aux"))
-        
 
         print ("\n********All Current Flows*********\n")
         flows_model = Model.get(sh, feature='flows')
@@ -68,7 +68,8 @@ class SteelHeadModelActionApp(Application):
 
         print ("\n********Bandwidth Statistics*********\n")
         stats_model = Model.get(sh, feature='stats')
-        print(stats_model.show_stats_bandwidth('all', 'bi-directional', '5min'))
+        print(stats_model.show_stats_bandwidth('all', 'bi-directional',
+                                               '5min'))
 
 
 if __name__ == '__main__':
