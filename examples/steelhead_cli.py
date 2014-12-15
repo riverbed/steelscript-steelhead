@@ -41,7 +41,6 @@ class SteelHeadCLIApp(Application):
     def main(self):
         auth = steelhead.CLIAuth(username=self.options.username,
                                  password=self.options.password)
-        print (self.options.host)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
         print("\n*****Version**********\n")
