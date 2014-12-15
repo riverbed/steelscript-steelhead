@@ -11,7 +11,7 @@ from steelscript.common.interaction.model import model, Model
 
 import re
 import ipaddress
-
+from collections import namedtuple
 
 @model
 class FlowsModel(Model):
@@ -20,14 +20,16 @@ class FlowsModel(Model):
     """
 
     def _parse_ip_addr(self, ip):
+        ParsedIP = namedtuple('ParsedIP', ['address', 'port'])
+
         # IPv4 looks like 123.124.125.126:1234
         # IPv6 looks like [2001:0db8:85a3:0000:0000:8a2e:0370:7334]:1234
         ip_pattern = "\[*([\w\.:]+)\]*:(\d+)"
         ip_regex = re.compile(ip_pattern)
         ip_match = ip_regex.search(ip)
         if ip_match:
-            return (ipaddress.ip_address(ip_match.group(1)),
-                    int(ip_match.group(2)))
+            return ParsedIP(address=ipaddress.ip_address(ip_match.group(1)),
+                    port=int(ip_match.group(2)))
 
     def _parse_flow_summary(self, output):
         # group 1
@@ -55,10 +57,10 @@ class FlowsModel(Model):
             flow_info_dict = dict()
             flow_info_dict = {
                 'type': match.group(1),
-                'source ip': src[0],
-                'source port': src[1],
-                'destination ip': dst[0],
-                'destination port': dst[1],
+                'source ip': src.address,
+                'source port': src.port,
+                'destination ip': dst.address,
+                'destination port': dst.port,
                 'app': match.group(4)}
             if match.group(5):
                 flow_info_dict['reduction'] = int(match.group(5))
