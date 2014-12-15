@@ -13,6 +13,7 @@ import re
 import ipaddress
 from collections import namedtuple
 
+
 @model
 class FlowsModel(Model):
     """
@@ -29,7 +30,7 @@ class FlowsModel(Model):
         ip_match = ip_regex.search(ip)
         if ip_match:
             return ParsedIP(address=ipaddress.ip_address(ip_match.group(1)),
-                    port=int(ip_match.group(2)))
+                            port=int(ip_match.group(2)))
 
     def _parse_flow_summary(self, output):
         # group 1
