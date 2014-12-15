@@ -20,20 +20,17 @@ from steelscript.common.app import Application
 
 
 class SteelHeadCLIApp(Application):
+    def add_positional_args(self):
+        self.add_positional_arg('host', 'SteelHead hostname or IP address')
 
     def add_options(self, parser):
         super(SteelHeadCLIApp, self).add_options(parser)
 
-        parser.add_option('-H', '--host',
-                          help='hostname or IP address')
         parser.add_option('-u', '--username', help="Username to connect with")
         parser.add_option('-p', '--password', help="Password to use")
 
     def validate_args(self):
         super(SteelHeadCLIApp, self).validate_args()
-
-        if not self.options.host:
-            self.parser.error("Host name needs to be specified")
 
         if not self.options.username:
             self.parser.error("User Name needs to be specified")
@@ -44,6 +41,7 @@ class SteelHeadCLIApp(Application):
     def main(self):
         auth = steelhead.CLIAuth(username=self.options.username,
                                  password=self.options.password)
+        print (self.options.host)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
         print("\n*****Version**********\n")

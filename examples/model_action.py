@@ -22,20 +22,17 @@ from steelscript.common.interaction.model import Model
 
 
 class SteelHeadModelActionApp(Application):
+    def add_positional_args(self):
+        self.add_positional_arg('host', 'SteelHead hostname or IP address')
 
     def add_options(self, parser):
         super(SteelHeadModelActionApp, self).add_options(parser)
 
-        parser.add_option('-H', '--host',
-                          help='hostname or IP address')
         parser.add_option('-u', '--username', help="Username to connect with")
         parser.add_option('-p', '--password', help="Password to use")
 
     def validate_args(self):
         super(SteelHeadModelActionApp, self).validate_args()
-
-        if not self.options.host:
-            self.parser.error("Host name needs to be specified")
 
         if not self.options.username:
             self.parser.error("User Name needs to be specified")
