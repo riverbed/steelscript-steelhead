@@ -23,17 +23,20 @@ SteelHead appliance and the existing authentication object.
 Different as steelhead_cli.py, we use Model/Action class to obtain certain
 information from the SteelHead Appliance. First of all, a Model or Action
 object is obtained as follows:
-<object> = <Model|Action>.get(<steelhead object>, feature=<feature >)
+<object> = <Model|Action>.get(<SteelHead object>, feature=<feature >)
 
 Model class is used if the desired data is a property of a steelhead device.
 Action class is used if the desired data can only be derived by the steelhead
 appliance to take some extra actions. There are 5 features: 'common',
 'networking', 'optimization', 'flows' and 'stats', which one to use is
-dependent upon the desired data. Details can be found on our online
-documentation at https://support.riverbed.com/apis/steelscript/index.html.
+dependent upon the desired data.
 
-Secondly, a method associated with the object is called to yield the desired
-data, as follows: <object>.<method>([arguments])
+Secondly, a method associated with the Model or Action object is called to
+yield the desired data, as follows:
+<Model or Action object>.<method>([arguments]).
+
+Details can be found on our online documentation at:
+https://support.riverbed.com/apis/steelscript/index.html.
 
 This example script should be executed as follows:
 steelhead_api.py <HOST> [-u USERNAME] [-p PASSWORD]
