@@ -49,11 +49,11 @@ class SteelHeadModelActionApp(Application):
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
         print("\n*****Version**********\n")
-        version_model = Model.get(sh, service='common')
+        version_model = Model.get(sh, feature='common')
         pprint(version_model.show_version())
 
         print("\n*****Networking State**********\n")
-        networking_model = Model.get(sh, service='networking')
+        networking_model = Model.get(sh, feature='networking')
         pprint(networking_model.show_interfaces("aux"))
 
         print("\n********All Current Flows*********\n")
