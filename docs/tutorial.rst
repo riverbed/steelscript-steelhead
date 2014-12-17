@@ -88,16 +88,17 @@ Sending commands
 
 As soon as a SteelHead object is available, commands can be sent to the SteelHead
 appliance via two kinds of interfaces: Command Line Interface (CLI) and Application Program
-Interface (API).  CLI is mainly used if the end user just to view the
+Interface (API).  CLI is mainly used if the end user just wants to view the
 output as it returns well formatted string. In contrast, API returns python data objects and
-therefore can be used for further data analysis and manipulation.
+therefore can be used for further data analysis and process.
 Below a detailed description for both interfaces are presented using concrete examples.
+Note that ``sh`` will be used to reference the existing SteelHead object, which is the
+basis for all communication with the SteelHead appliance. 
 
 CLI Interface
 """""""""""""
 
-The SteelHead object ``sh`` is the basis for all communication with the
-SteelHead appliance.  We can get some basic version information as follows.
+We can get some basic version information as follows.
 
 .. code-block:: python
 
@@ -117,14 +118,15 @@ SteelHead appliance.  We can get some basic version information as follows.
    CPU load averages: 0.23 / 0.15 / 0.10
 
 As shown above, a CLI object is obtained by referencing the ``cli`` attribute
-of ``sh``. Afterwards, a method exec_command can be called via the existing CLI
+of ``sh``. Afterwards, a method ``exec_command`` can be called via the existing CLI
 object. Note that the string argument is the actual CLI command that is run as if it
 were executed on the SteelHead appliance.
 
-When one logs into a SteelHead appliance, he/she will be in one of there modes
+When one logs into a SteelHead appliance, he/she will be in one of three modes
 on a shell terminal, including basic mode, enable mode and configure mode. The CLI
 interface from the SteelHead object defaults to enable mode. In order to enter into
 configure mode, the user need to specifically run the below command in a python shell.
+
 .. code-block:: python
 
    >>> sh.cli.exec_command("configure t")
@@ -135,16 +137,17 @@ API Interface
 If the user wants to obtain python data objects via the SteelHead object ``sh``
 instead of just viewing the output, he/she should use the API interface.
 The key components of the API interface are the Model and Action class.
-Model class is used if the desired data is a property of a SteelHead appliance.
-Action class is used if the desired data can only be derived by the SteelHead
-appliance to take some extra actions. For instance, to obtain the version
+Model class is used if the desired data is a property of a SteelHead appliance,
+which can usually be derived by executing just one command.
+on the other hand, the Action class is used if the desired data can only be derived by the SteelHead
+appliance to take some extra processing in addition to just one command. For instance, to obtain the version
 information of a SteelHead appliance should be using the Model class as follows:
 
 .. code-block:: python
 
-   >>> import pprint
+   >>> from pprint import pprint
    >>> from steelscript.common.interaction.model import Model
-   >>> model = Model.get(sh, service='common')
+   >>> model = Model.get(sh, feature='common')
    >>> pprint(model.show_version())
    {u'build arch': u'i386',
     u'build id': u'#39',
@@ -154,33 +157,29 @@ information of a SteelHead appliance should be using the Model class as follows:
     u'product name': u'rbt_sh',
     u'product release': u'8.5.2'}
 
+In contrast, to get the product information of the SteelHead requires further processing
+of the output of the version information above, thus the Action class should be used
+as follows:
 
-In contrast, to get the product 
+.. code-block:: python
 
-Different as steelhead_cli.py, we use Model/Action class to obtain certain
-24  
-information from the SteelHead Appliance. First of all, a Model or Action
-25  
-object is obtained as follows:
-26  
-<object> = <Model|Action>.get(<SteelHead object>, feature=<feature >)
-27  
-28  
+   >>> from pprint import pprint
+   >>> from steelscript.common.interaction.action import Action
+   >>> action = Action.get(sh, feature='common')
+   >>> pprint(action.show_product_info())
+   {u'model': u'250', u'name': u'SteelHead', u'release': u'8.5.2'}
 
-29  
- There are 5 features: 'common',
-31  
-'networking', 'optimization', 'flows' and 'stats', which one to use is
-32  
-dependent upon the desired data.
-33  
-34  
-Secondly, a method associated with the Model or Action object is called to
-35  
-yield the desired data, as follows:
-36  
-<Model or Action object>.<method>([arguments]).
-
+From the above two examples, we can summarize on the procedure of using API to
+obtain data from a SteelHead.  First of all, the Model or Action class is imported.
+Secondly, the Model or Action object is created by passing the SteelHead object ``sh``
+and a feature string "common" to the get class method associated with either Model or Action class.
+The last and most important step is call a method associated with the derived Model
+or Action object according to the specific data that is desired.
+There are a total of 5 features available: 'common', 'networking', 'optimization', 'flows' and 'stats'.
+Each feature is bound to a model and action object with a set of associated methods.
+Methods supported by each feature can be found at :doc:`steelhead`.
+Note that both of the above-mentioned examples yield data as a python dictionary instead
+of a well-formatted string.
 
 
 Before moving on, exit the python interactive shell:
@@ -194,7 +193,7 @@ Extending the Example
 ---------------------
 
 As a last item to help get started with your own scripts, we will post a new
-script below, then walk through the key differences with the above-mentioned example.
+script below, then walk through the key differences with the above-mentioned examples.
 
 .. code-block:: python
 
@@ -202,22 +201,22 @@ script below, then walk through the key differences with the above-mentioned exa
 
    import steelscript.steelhead.core.steelhead as steelhead
 
+   from pprint import pprint
    from steelscript.common.app import Application
 
    class ShowVersionApp(Application):
 
+       def add_positional_args(self):
+           self.add_positional_arg('host', 'SteelHead hostname or IP address')
+
        def add_options(self, parser):
            super(ShowVersionApp, self).add_options(parser)
-           parser.add_option('-H', '--host',
-                             help='hostname or IP address')
+
            parser.add_option('-u', '--username', help="Username to connect with")
            parser.add_option('-p', '--password', help="Password to use")
 
        def validate_args(self):
            super(ShowVersionApp, self).validate_args()
-
-           if not self.options.host:
-               self.parser.error("Host name needs to be specified")
 
            if not self.options.username:
                self.parser.error("User Name needs to be specified")
@@ -230,20 +229,21 @@ script below, then walk through the key differences with the above-mentioned exa
                                     password=self.options.password)
            sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-           print (sh.cli.exec_command("show version"))
+           pprint (sh.cli.exec_command("show version"))
 
     
    ShowVersionApp().run()
 
-Copy that code into a new file ``script``, and run it from command line. Note that
-``hostname``, ``username``, ``password`` are now all items to be
+Copy that code into a new file ``script``, make it executable and run it from command line. Note that
+``host``, ``username``, ``password`` are now all items to be
 passed to the script.
 
 For example:
 
-.. code-block:: python
+.. code-block:: bash
 
-   > python $script -H $host -u $username -p $password
+   $ chmod +x $script
+   $ $script $host -u $username -p $password
    Product name:      rbt_sh
    Product release:   8.5.2
    Build ID:          #39
@@ -260,7 +260,7 @@ For example:
 
 Let us break down the script. First we need to import some items:
 
-.. code-block:: python
+.. code-block:: bash
 
    #!/usr/bin/env python
 
@@ -273,7 +273,7 @@ execute this script using the program after the '#!'. Besides steelhead module,
 we are also importing the Application class, which is used to help parse arguments
 and simplify the api call to run the application.
 
-.. code-block:: python
+.. code-block:: bash
 
    class ShowVersionApp(Application):
 
@@ -305,7 +305,7 @@ and *extend* its functionality by defining the function ``add_options`` and
 a password, and then if the format of the passed-in arguments in the command
 is wrong, a help message will be printed out. 
 
-.. code-block:: python
+.. code-block:: bash
 
        def main(self):
            auth = steelhead.CLIAuth(username=self.options.username,
@@ -317,6 +317,7 @@ is wrong, a help message will be printed out.
     
    ShowVersionApp().run()
 
-This is the main part of the script, and remains similar to our previous
-example. The last line calls the run function as defined in the Application class,
+This is the main part of the script, and it is using the CLI interface. One
+can easily modify it to use any API interface to fetch data from a SteelHead appliance.
+The last line calls the run function as defined in the Application class,
 which executes the main function defined in the ShowVersionApp class.
