@@ -29,30 +29,24 @@ SteelHead also provides better visibility into application and network
 performance and the end user experience plus control through an
 application-aware approach to hybrid networking and path selection based
 on centralized, business intent-based policies for what you want to
-achieve – as a business. SteelScript for SteelHead offers a set of interfaces
+achieve – as a business.  SteelScript for SteelHead offers a set of interfaces
 to control and work with a SteelHead appliance.
 
-SteelHead Objects
--------------------
+Operation Overview
+------------------
 
-Interacting with a SteelHead leverages two key classes:
+Interacting with a SteelHead appliance via a python script involves two steps.
+The first step is to obtain a SteelHead object.  The second step is to send
+command to the appliance via the existing SteelHead object.  Below we will
+describe both steps in details.
 
-* :py:class:`SteelHead <steelhead.SteelHead>` - provides
-  the primary interface to the appliance, handling initialization,
-  setup, and communication via command line calls.
-  
-* :py:class:`CLIAuth <steelhead.CLIAuth>` - used for username/password
-  based authentication for command-line access.
-
-With that brief overview, let's get started.
-
-Startup
--------
+Obtaining a SteelHead Object
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As with any Python code, the first step is to import the module(s) we
-intend to use.  The SteelScript code for working with SteelHead
-appliances resides in a module called :py:mod:`steelscript.steelhead.core`.  The main class in this module
-is :py:class:`SteelHead <steelhead.SteelHead>`.  This object
+intend to use. The SteelScript code for working with SteelHead
+appliances resides in a module called :py:mod:`steelscript.steelhead.core.steelhead`.
+The main class in this module is :py:class:`SteelHead <steelhead.SteelHead>`.  This object
 represents a connection to a SteelHead appliance.
 
 To start, start python from the shell or command line:
@@ -81,16 +75,29 @@ a SteelHead object is created by instantiating the SteelHead class with
 the hostname or IP address of the SteelHead appliance and the existing
 authentication object. Note that the arguments ``$username`` and ``$password`` 
 need to be replaced with the actual username and password, and the argument
-``$host`` need to be replaced with the hostname or IP address of the SteelHead appliance. 
+``$host`` need to be replaced with the hostname or IP address of the SteelHead
+appliance. 
 
 As soon as the ``SteelHead`` object is created, a connection is
 established to the appliance, and the authentication credentials are
 validated.  If the username and password are not correct, you will
 immediately see an exception.
 
-The ``sh`` object is the basis for all communication with the
-SteelHead appliance.  We can get some basic version information by
-simply executing the "show version" command
+Sending commands
+^^^^^^^^^^^^^^^^
+
+As soon as a SteelHead object is available, commands can be sent to the SteelHead
+appliance via two kinds of interfaces: Command Line Interface (CLI) and Application Program
+Interface (API).  CLI is mainly used if the end user just to view the
+output as it returns well formatted string. In contrast, API returns python data objects and
+therefore can be used for further data analysis and manipulation.
+Below a detailed description for both interfaces are presented using concrete examples.
+
+CLI Interface
+"""""""""""""
+
+The SteelHead object ``sh`` is the basis for all communication with the
+SteelHead appliance.  We can get some basic version information as follows.
 
 .. code-block:: python
 
@@ -108,6 +115,73 @@ simply executing the "show version" command
    System memory:     2063 MB used / 974 MB free / 3038 MB total
    Number of CPUs:    1
    CPU load averages: 0.23 / 0.15 / 0.10
+
+As shown above, a CLI object is obtained by referencing the ``cli`` attribute
+of ``sh``. Afterwards, a method exec_command can be called via the existing CLI
+object. Note that the string argument is the actual CLI command that is run as if it
+were executed on the SteelHead appliance.
+
+When one logs into a SteelHead appliance, he/she will be in one of there modes
+on a shell terminal, including basic mode, enable mode and configure mode. The CLI
+interface from the SteelHead object defaults to enable mode. In order to enter into
+configure mode, the user need to specifically run the below command in a python shell.
+.. code-block:: python
+
+   >>> sh.cli.exec_command("configure t")
+
+API Interface
+"""""""""""""
+
+If the user wants to obtain python data objects via the SteelHead object ``sh``
+instead of just viewing the output, he/she should use the API interface.
+The key components of the API interface are the Model and Action class.
+Model class is used if the desired data is a property of a SteelHead appliance.
+Action class is used if the desired data can only be derived by the SteelHead
+appliance to take some extra actions. For instance, to obtain the version
+information of a SteelHead appliance should be using the Model class as follows:
+
+.. code-block:: python
+
+   >>> import pprint
+   >>> from steelscript.common.interaction.model import Model
+   >>> model = Model.get(sh, service='common')
+   >>> pprint(model.show_version())
+   {u'build arch': u'i386',
+    u'build id': u'#39',
+    u'built by': u'mockbuild@bannow-worker4',
+    u'number of cpus': 1,
+    u'product model': u'250',
+    u'product name': u'rbt_sh',
+    u'product release': u'8.5.2'}
+
+
+In contrast, to get the product 
+
+Different as steelhead_cli.py, we use Model/Action class to obtain certain
+24  
+information from the SteelHead Appliance. First of all, a Model or Action
+25  
+object is obtained as follows:
+26  
+<object> = <Model|Action>.get(<SteelHead object>, feature=<feature >)
+27  
+28  
+
+29  
+ There are 5 features: 'common',
+31  
+'networking', 'optimization', 'flows' and 'stats', which one to use is
+32  
+dependent upon the desired data.
+33  
+34  
+Secondly, a method associated with the Model or Action object is called to
+35  
+yield the desired data, as follows:
+36  
+<Model or Action object>.<method>([arguments]).
+
+
 
 Before moving on, exit the python interactive shell:
 
