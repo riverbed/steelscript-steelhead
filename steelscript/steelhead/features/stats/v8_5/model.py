@@ -43,7 +43,7 @@ class StatsModel(Model):
                     'data reduction': 10,
                     'data reduction peak': 95,
                     'data reduction peak time': '2014/12/05 14:50:00',
-                    'capacity increase': '1.1 X'}
+                    'capacity increase': '1.1'}
         """
 
         cmd = "show stats bandwidth %s" % port
@@ -56,12 +56,12 @@ class StatsModel(Model):
         result.strip()
         parsed = cli_parse_basic(result)
 
-        pct_pattern = "(\d+) %"
+        pct_pattern = "(\d+\.*\d*) [%X]"
         regex = re.compile(pct_pattern)
 
         for stat in parsed:
             match = regex.search(parsed[stat])
             if match:
-                parsed[stat] = int(match.group(1))
+                parsed[stat] = float(match.group(1))
 
         return parsed

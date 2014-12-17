@@ -29,7 +29,7 @@ SHOW_STATS_ALL_PARSED_DICT = {
     'data reduction': 93,
     'data reduction peak': 98,
     'data reduction peak time': '2014/12/09 08:39:35',
-    'capacity increase': '15.4 X'
+    'capacity increase': 15.4
 }
 
 
