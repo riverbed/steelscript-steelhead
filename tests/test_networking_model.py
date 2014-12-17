@@ -13,7 +13,7 @@ import mock
 import netaddr
 import pytest
 
-from steelscript.steelhead.services.networking.v8_5.model import \
+from steelscript.steelhead.features.networking.v8_5.model import \
     NetworkingModel
 
 

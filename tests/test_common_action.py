@@ -31,7 +31,7 @@ PRODUCT_INFO = {
 
 @pytest.fixture
 def actor(mock_model):
-    return Action.get(mock.Mock(), service='common')
+    return Action.get(mock.Mock(), feature='common')
 
 
 @pytest.yield_fixture

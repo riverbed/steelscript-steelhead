@@ -10,7 +10,7 @@ from __future__ import (unicode_literals, print_function, division,
 import mock
 import pytest
 
-from steelscript.steelhead.services.common.v8_5.model import CommonModel
+from steelscript.steelhead.features.common.v8_5.model import CommonModel
 
 
 SHOW_VERSION_OUTPUT = """
