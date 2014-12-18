@@ -48,7 +48,7 @@ setup(
     author_email='eng-github@riverbed.com',
     packages=find_packages(exclude=('gitpy_versioning',)),
     include_package_data=True,
-    install_requires=['netaddr','steelscript.cmdline'],
+    install_requires=['ipaddress', 'netaddr', 'steelscript.cmdline'],
     extras_require={'test': test,
                     'doc': doc,
                     'dev': [p for p in itertools.chain(test, doc)],

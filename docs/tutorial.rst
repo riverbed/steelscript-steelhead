@@ -173,7 +173,7 @@ From the above two examples, we can summarize on the procedure of using API to
 obtain data from a SteelHead.  First of all, the Model or Action class is imported.
 Secondly, the Model or Action object is created by passing the SteelHead object ``sh``
 and a feature string "common" to the get class method associated with either Model or Action class.
-The last and most important step is call a method associated with the derived Model
+The last and most important step is to call a method associated with the derived Model
 or Action object according to the specific data that is desired.
 There are a total of 5 features available: 'common', 'networking', 'optimization', 'flows' and 'stats'.
 Each feature is bound to a model and action object with a set of associated methods.
@@ -300,7 +300,7 @@ This section begins the definition of a new class, which inherits from the
 class Application.  This is some of the magic of object-oriented programming,
 a lot of functionality is defined as part of Application, and we get all
 of that for *free*, just by inheriting from it.  In fact, we go beyond that,
-and *extend* its functionality by defining the function ``add_options`` and 
+and *extend* its functionality by defining the function ``add_options`` and
 ``validate_args``.  Here, we add options to pass in a hostname, a username and
 a password, and then if the format of the passed-in arguments in the command
 is wrong, a help message will be printed out. 
