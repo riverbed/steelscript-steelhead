@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Copyright (c) 2014 Riverbed Technology, Inc.
 #
 # This software is licensed under the terms and conditions of the MIT License
@@ -6,8 +8,35 @@
 
 
 """
-This script presents a python example of logging into a steelhead
-appliance to print the states of the steelhead as in python data structures.
+This script presents a python example of obtaining data in a python structure
+about the version, networking state, current connections (flows) and bandwidth
+statistics of a SteelHead appliance.
+
+Obtaining an SteelHead object requires the same procedures as steelhead_cli.py.
+First of all, the steelhead module needs to be imported, from which two
+classes are used, including CLIAuth and SteelHead. An authentication object
+is created by instantiating the CLIAuth class with user name and password to
+access the SteelHead appliance. Afterwards, a SteelHead object is created by
+instantiating the SteelHead class with the host name or IP address of the
+SteelHead appliance and the existing authentication object.
+
+Different as steelhead_cli.py, we use Model/Action class to obtain certain
+information from the SteelHead Appliance. First of all, a Model or Action
+object is obtained as follows:
+<object> = <Model|Action>.get(<steelhead object>, feature=<feature >)
+
+Model class is used if the desired data is a property of a steelhead device.
+Action class is used if the desired data can only be derived by the steelhead
+appliance to take some extra actions. There are 5 features: 'common',
+'networking', 'optimization', 'flows' and 'stats', which one to use is
+dependent upon the desired data. Details can be found on our online
+documentation at https://support.riverbed.com/apis/steelscript/index.html.
+
+Secondly, a method associated with the object is called to yield the desired
+data, as follows: <object>.<method>([arguments])
+
+This example script should be executed as follows:
+steelhead_api.py <HOST> [-u USERNAME] [-p PASSWORD]
 """
 
 from __future__ import (absolute_import, unicode_literals, print_function,
@@ -45,26 +74,26 @@ class SteelHeadAPIApp(Application):
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-        print("\n*****Version**********\n")
+        print("\n********** Version **********\n")
         version_model = Model.get(sh, feature='common')
         pprint(version_model.show_version())
 
-        print("\n*****Networking State**********\n")
+        print("\n********** Networking State **********\n")
         networking_model = Model.get(sh, feature='networking')
         pprint(networking_model.show_interfaces("aux"))
 
-        print("\n********All Current Flows*********\n")
+        print("\n********** All Current Flows **********\n")
         flows_model = Model.get(sh, feature='flows')
         pprint(flows_model.show_flows('all'))
 
         # Use the Action class
         flows_action = Action.get(sh, feature='flows')
-        print("\n********All Optimized Flows*********\n")
+        print("\n********** All Optimized Flows **********\n")
         pprint(flows_action.show_flows_optimized())
-        print("\n********All Passthrough Flows***********\n")
+        print("\n********** All Passthrough Flows **********\n")
         pprint(flows_action.show_flows_passthrough())
 
-        print ("\n********Bandwidth Statistics*********\n")
+        print ("\n********** Bandwidth Statistics **********\n")
         stats_model = Model.get(sh, feature='stats')
         pprint(stats_model.show_stats_bandwidth('all', 'bi-directional',
                                                 '5min'))

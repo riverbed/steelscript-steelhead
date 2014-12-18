@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Copyright (c) 2014 Riverbed Technology, Inc.
 #
 # This software is licensed under the terms and conditions of the MIT License
@@ -6,9 +8,21 @@
 
 
 """
-This script presents a python example of logging into a steelhead
-appliance to show version, networking state, current connections
-(flows) and bandwidth statistics.
+This script presents a python example of using Command Line Interface (CLI)
+to show version, networking state, current connections (flows) and bandwidth
+statistics of a SteelHead appliance.
+
+First of all, the steelhead module needs to be imported, from which two
+classes are used, including CLIAuth and SteelHead. An authentication object
+is created by instantiating the CLIAuth class with user name and password to
+access the SteelHead appliance. Afterwards, a SteelHead object is created by
+instantiating the SteelHead class with the host name or IP address of the
+SteelHead appliance and the existing authentication object. Then, we can use
+the SteelHead object to execute command on the SteelHead appliance as follows:
+steelhead_object.cli.exec_command("command_to_be_executed").
+
+This example script should be executed as follows:
+steelhead_cli.py <HOST> [-u USERNAME] [-p PASSWORD]
 """
 
 from __future__ import (absolute_import, unicode_literals, print_function,
@@ -43,20 +57,20 @@ class SteelHeadCLIApp(Application):
                                  password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-        print("\n*****Version**********\n")
+        print("\n********** Version **********\n")
         print(sh.cli.exec_command("show version"))
 
-        print("\n*****Networking State**********\n")
+        print("\n********** Networking State **********\n")
         print(sh.cli.exec_command("show interfaces aux"))
 
-        print("\n********All Current Flows*********\n")
+        print("\n********** All Current Flows **********\n")
         print(sh.cli.exec_command("show flows all"))
-        print("\n********All Optimized Flows*********\n")
+        print("\n********** All Optimized Flows **********\n")
         print(sh.cli.exec_command("show flows optimized"))
-        print("\n********All Passthrough Flows***********\n")
+        print("\n********** All Passthrough Flows **********\n")
         print(sh.cli.exec_command("show flows passthrough"))
 
-        print ("\n********Bandwidth Statistics*********\n")
+        print ("\n********** Bandwidth Statistics **********\n")
         print (sh.cli.exec_command("show stats bandwidth all "
                                    "bi-directional 5min"))
 
