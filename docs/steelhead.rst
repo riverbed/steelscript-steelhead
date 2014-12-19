@@ -1,46 +1,87 @@
 SteelScript SteelHead Sources
-================================
+=============================
 
-.. automodule:: steelscript.steelhead.core.steelhead
+
+.. automodule:: steelscript.steelhead.core
 
 .. currentmodule:: steelscript.steelhead.core.steelhead
 
 :py:class:`CLIAuth` Objects
 ---------------------------
-
 .. autoclass:: CLIAuth
    :members:
-   :inherited-members:
-   :show-inheritance:
 
 :py:class:`SteelHead` Objects
 -----------------------------
 
 .. autoclass:: SteelHead
    :members:
-   :inherited-members:
-   :show-inheritance:
 
-.. automodule:: steelscript.steelhead.services.common.v8_5.model
+.. automodule:: steelscript.steelhead.features.common
 
-.. currentmodule:: steelscript.steelhead.services.common.v8_5.model
+.. currentmodule:: steelscript.steelhead.features.common.v8_5.model
 
 :py:class:`CommonModel` Objects
 -------------------------------
 
+Returned by ``Model.get(steelhead_object, feature='common')``.
+
 .. autoclass:: CommonModel
    :members:
-   :inherited-members:
-   :show-inheritance:
 
-.. automodule:: steelscript.steelhead.services.networking.v8_5.model
+.. currentmodule:: steelscript.steelhead.features.common.v8_5.action
 
-.. currentmodule:: steelscript.steelhead.services.networking.v8_5.model
+:py:class:`CLI` (CommonAction) Objects
+--------------------------------
+
+Returned by ``Action.get(steelhead_object, feature='common')``.
+
+.. autoclass:: CLI
+   :members:
+
+.. automodule:: steelscript.steelhead.features.flows
+
+.. currentmodule:: steelscript.steelhead.features.flows.v8_5.model
+
+:py:class:`FlowsModel` Objects
+------------------------------
+
+Returned by ``Model.get(steelhead_object, feature='flows')``.
+
+.. autoclass:: FlowsModel
+   :members:
+
+.. currentmodule:: steelscript.steelhead.features.flows.v8_5.action
+
+:py:class:`CLI` (FlowsAction) Objects
+-----------------------
+
+Returned by ``Action.get(steelhead_object, feature='flows')``.
+
+.. autoclass:: CLI
+   :members:
+
+
+.. automodule:: steelscript.steelhead.features.networking
+
+.. currentmodule:: steelscript.steelhead.features.networking.v8_5.model
 
 :py:class:`NetworkingModel` Objects
 -----------------------------------
 
+Returned by ``Model.get(steelhead_object, feature='networking')``.
+
 .. autoclass:: NetworkingModel
    :members:
-   :inherited-members:
-   :show-inheritance:
+
+.. automodule:: steelscript.steelhead.features.stats
+
+.. currentmodule:: steelscript.steelhead.features.stats.v8_5.model
+
+:py:class:`StatsModel` Objects
+-------------------------------
+
+Returned by ``Model.get(steelhead_object, feature='stats')``.
+
+.. autoclass:: StatsModel
+   :members:
