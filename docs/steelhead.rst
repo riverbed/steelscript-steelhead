@@ -24,7 +24,7 @@ SteelScript SteelHead Sources
 :py:class:`CommonModel` Objects
 -------------------------------
 
-Returned by ``Model.get(steelhead_object, feature='common')``.
+Returned by ``Model.get(steelhead_instance, feature='common')``.
 
 .. autoclass:: CommonModel
    :members:
@@ -34,7 +34,7 @@ Returned by ``Model.get(steelhead_object, feature='common')``.
 :py:class:`CLI` (CommonAction) Objects
 --------------------------------
 
-Returned by ``Action.get(steelhead_object, feature='common')``.
+Returned by ``Action.get(steelhead_instance, feature='common')``.
 
 .. autoclass:: CLI
    :members:
@@ -46,7 +46,7 @@ Returned by ``Action.get(steelhead_object, feature='common')``.
 :py:class:`FlowsModel` Objects
 ------------------------------
 
-Returned by ``Model.get(steelhead_object, feature='flows')``.
+Returned by ``Model.get(steelhead_instance, feature='flows')``.
 
 .. autoclass:: FlowsModel
    :members:
@@ -56,7 +56,7 @@ Returned by ``Model.get(steelhead_object, feature='flows')``.
 :py:class:`CLI` (FlowsAction) Objects
 -----------------------
 
-Returned by ``Action.get(steelhead_object, feature='flows')``.
+Returned by ``Action.get(steelhead_instance, feature='flows')``.
 
 .. autoclass:: CLI
    :members:
@@ -69,7 +69,7 @@ Returned by ``Action.get(steelhead_object, feature='flows')``.
 :py:class:`NetworkingModel` Objects
 -----------------------------------
 
-Returned by ``Model.get(steelhead_object, feature='networking')``.
+Returned by ``Model.get(steelhead_instance, feature='networking')``.
 
 .. autoclass:: NetworkingModel
    :members:
@@ -81,7 +81,7 @@ Returned by ``Model.get(steelhead_object, feature='networking')``.
 :py:class:`StatsModel` Objects
 -------------------------------
 
-Returned by ``Model.get(steelhead_object, feature='stats')``.
+Returned by ``Model.get(steelhead_instance, feature='stats')``.
 
 .. autoclass:: StatsModel
    :members:
