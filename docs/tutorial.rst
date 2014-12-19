@@ -90,8 +90,9 @@ As soon as a SteelHead object is available, commands can be sent to the SteelHea
 appliance via two kinds of interfaces: Command Line Interface (CLI) and Application Program
 Interface (API).  CLI is mainly used if the end user just wants to view the
 output as it returns well formatted string. In contrast, API returns python data objects and
-therefore can be used for further data analysis and process.
-Below a detailed description for both interfaces are presented using concrete examples.
+therefore can be used for further data analysis and processing.
+
+See below for a detailed description for both interfaces are presented using concrete examples.
 Note that ``sh`` will be used to reference the existing SteelHead object, which is the
 basis for all communication with the SteelHead appliance. 
 
@@ -102,7 +103,7 @@ We can get some basic version information as follows.
 
 .. code-block:: python
 
-   >>> print (sh.cli.exec_command("show version"))
+   >>> print sh.cli.exec_command("show version")
    Product name:      rbt_sh
    Product release:   8.5.2
    Build ID:          #39
@@ -125,11 +126,24 @@ were executed on the SteelHead appliance.
 When one logs into a SteelHead appliance, he/she will be in one of three modes
 on a shell terminal, including basic mode, enable mode and configure mode. The CLI
 interface from the SteelHead object defaults to enable mode. In order to enter into
-configure mode, the user need to specifically run the below command in a python shell.
+configure mode, the user need to either use a "mode" parameter or change the default
+mode to configure mode. The first method applies to scenarios when one just needs to
+run no more than a few commands in configure mode, as shown below:
 
 .. code-block:: python
 
-   >>> sh.cli.exec_command("configure t")
+   >>> from steelscript.cmdline.cli import CLIMode
+   >>> sh.cli.exec_command("show version", mode=CLIMode.CONFIG)
+
+In contrast, if the user wants to engage in a fair amount of interactions with SteelHead
+appliance in configure mode, it is recommended to change the default to configure mode, as
+shown below:
+
+.. code-block:: python
+
+   >>> from steelscript.cmdline.cli import CLIMode
+   >>> sh.cli.default_mode = CLIMode.CONFIG
+   >>> sh.cli.exec_command("show version")
 
 API Interface
 """""""""""""
@@ -139,9 +153,10 @@ instead of just viewing the output, he/she should use the API interface.
 The key components of the API interface are the Model and Action class.
 Model class is used if the desired data is a property of a SteelHead appliance,
 which can usually be derived by executing just one command.
-on the other hand, the Action class is used if the desired data can only be derived by the SteelHead
-appliance to take some extra processing in addition to just one command. For instance, to obtain the version
-information of a SteelHead appliance should be using the Model class as follows:
+On the other hand, the Action class is intended to include higher-level methods,
+deriving data by taking some extra processing in addition to just one command.
+For instance, to obtain the version information of a SteelHead appliance should
+be using the Model class as follows:
 
 .. code-block:: python
 
@@ -193,7 +208,7 @@ Extending the Example
 ---------------------
 
 As a last item to help get started with your own scripts, we will post a new
-script below, then walk through the key differences with the above-mentioned examples.
+script below, then walk through the key sections in the example script.
 
 .. code-block:: python
 
@@ -201,7 +216,6 @@ script below, then walk through the key differences with the above-mentioned exa
 
    import steelscript.steelhead.core.steelhead as steelhead
 
-   from pprint import pprint
    from steelscript.common.app import Application
 
    class ShowVersionApp(Application):
@@ -229,34 +243,10 @@ script below, then walk through the key differences with the above-mentioned exa
                                     password=self.options.password)
            sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
-           pprint (sh.cli.exec_command("show version"))
+           print sh.cli.exec_command("show version")
 
     
    ShowVersionApp().run()
-
-Copy that code into a new file ``script``, make it executable and run it from command line. Note that
-``host``, ``username``, ``password`` are now all items to be
-passed to the script.
-
-For example:
-
-.. code-block:: bash
-
-   $ chmod +x $script
-   $ $script $host -u $username -p $password
-   Product name:      rbt_sh
-   Product release:   8.5.2
-   Build ID:          #39
-   Build date:        2013-12-20 10:10:02
-   Build arch:        i386
-   Built by:          mockbuild@bannow-worker4
-
-   Uptime:            153d 10h 8m 29s
-
-   Product model:     250
-   System memory:     2063 MB used / 974 MB free / 3038 MB total
-   Number of CPUs:    1
-   CPU load averages: 0.23 / 0.15 / 0.10
 
 Let us break down the script. First we need to import some items:
 
@@ -301,7 +291,7 @@ class Application.  This is some of the magic of object-oriented programming,
 a lot of functionality is defined as part of Application, and we get all
 of that for *free*, just by inheriting from it.  In fact, we go beyond that,
 and *extend* its functionality by defining the function ``add_options`` and
-``validate_args``.  Here, we add options to pass in a hostname, a username and
+``validate_args``.  Here, we add options to pass in a host name, a user name and
 a password, and then if the format of the passed-in arguments in the command
 is wrong, a help message will be printed out. 
 
@@ -321,3 +311,26 @@ This is the main part of the script, and it is using the CLI interface. One
 can easily modify it to use any API interface to fetch data from a SteelHead appliance.
 The last line calls the run function as defined in the Application class,
 which executes the main function defined in the ShowVersionApp class.
+
+Now let us try to run the script. Copy the code into a new file ``show_version_example.py``,
+make it executable and run it from command line. Note that ``host``, ``username``, ``password``
+are now all items to be passed to the command, shown as below.
+
+.. code-block:: bash
+
+   $ chmod +x show_version_example.py
+   $ show_version_example.py $host -u $username -p $password
+   Product name:      rbt_sh
+   Product release:   8.5.2
+   Build ID:          #39
+   Build date:        2013-12-20 10:10:02
+   Build arch:        i386
+   Built by:          mockbuild@bannow-worker4
+
+   Uptime:            153d 10h 8m 29s
+
+   Product model:     250
+   System memory:     2063 MB used / 974 MB free / 3038 MB total
+   Number of CPUs:    1
+   CPU load averages: 0.23 / 0.15 / 0.10
+
