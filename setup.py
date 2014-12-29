@@ -8,16 +8,19 @@ from __future__ import print_function, division
 
 import sys
 import itertools
-
-from setuptools.command.test import test as TestCommand
-from gitpy_versioning import get_version
-
-from setuptools import find_packages
+from glob import glob
 
 try:
-    from setuptools import setup
+    from setuptools import setup, find_packages
+    from setuptools.command.test import test as TestCommand
 except ImportError:
-    from distutils.core import setup
+    raise ImportError(
+        'The setuptools package is required to install this library. See '
+        '"https://pypi.python.org/pypi/setuptools#installation-instructions" '
+        'for further instructions.'
+    )
+
+from gitpy_versioning import get_version
 
 
 class PyTest(TestCommand):
@@ -32,29 +35,57 @@ class PyTest(TestCommand):
         errno = pytest.main("%s tests" % " ".join(self.test_args))
         sys.exit(errno)
 
-readme = open('README.rst').read()
-
 test = ['pytest', 'testfixtures', 'mock']
-
 doc = ['sphinx']
 
 setup(
     name='steelscript.steelhead',
     namespace_packages=['steelscript'],
     version=get_version(),
-    description='Python modules for interacting with Riverbed SteelHead with SteelScript',
-    long_description=readme,
     author='Riverbed Technology',
     author_email='eng-github@riverbed.com',
+    url='http://pythonhosted.org/steelscript',
+    license='MIT',
+    description=('Python modules for interacting with '
+                 'Riverbed SteelHead with SteelScript'),
+    long_description="""SteelScript for SteelHead
+=========================
+
+This package provides device specific bindings for interacting
+with Riverbed SteelHead devices as part of the Riverbed Steelscript
+for Python.
+
+For a complete guide to installation, see:
+
+http://pythonhosted.org/steelscript/
+    """,
+
+    platforms='Linux, Mac OS, Windows',
+    classifiers=(
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Information Technology',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
+        'Topic :: System :: Networking',
+    ),
+
     packages=find_packages(exclude=('gitpy_versioning',)),
     include_package_data=True,
+
+    data_files=(
+        ('share/doc/steelscript/docs/steelhead', glob('docs/*')),
+        ('share/doc/steelscript/examples/steelhead', glob('examples/*')),
+    ),
+
     install_requires=['ipaddress', 'netaddr', 'steelscript.cmdline'],
     extras_require={'test': test,
                     'doc': doc,
                     'dev': [p for p in itertools.chain(test, doc)],
                     'all': []
                     },
-    tests_require = test,
-    keywords='steelscript.steelhead',
-    cmdclass = {'test': PyTest},
+    tests_require=test,
+    cmdclass={'test': PyTest},
 )
