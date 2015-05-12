@@ -76,7 +76,7 @@ http://pythonhosted.org/steelscript/
     include_package_data=True,
 
     data_files=(
-        ('share/doc/steelscript/docs/steelhead', glob('docs/*')),
+        ('share/doc/steelscript/docs/steelhead', glob('docs/*.rst')),
         ('share/doc/steelscript/examples/steelhead', glob('examples/*')),
     ),
 

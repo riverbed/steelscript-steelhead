@@ -1,0 +1,3 @@
+-i https://pypibox.lab.nbttech.com/pq/development/
+
+auto-api-summary
