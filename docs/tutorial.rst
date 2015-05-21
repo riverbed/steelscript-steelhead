@@ -181,7 +181,7 @@ as follows:
    >>> from pprint import pprint
    >>> from steelscript.common.interaction.action import Action
    >>> action = Action.get(sh, feature='common')
-   >>> pprint(action.show_product_info())
+   >>> pprint(action.get_product_info())
    {u'model': u'250', u'name': u'SteelHead', u'release': u'8.5.2'}
 
 From the above two examples, we can summarize on the procedure of using API to
