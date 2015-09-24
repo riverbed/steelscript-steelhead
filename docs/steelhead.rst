@@ -2,7 +2,7 @@ SteelScript SteelHead Sources
 =============================
 
 
-.. automodule:: steelscript.steelhead.core
+.. automodule:: steelscript.steelhead.core.steelhead
 
 .. currentmodule:: steelscript.steelhead.core.steelhead
 
