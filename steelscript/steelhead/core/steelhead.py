@@ -21,15 +21,19 @@ class CLIAuth(object):
     command-line access.
     """
 
-    def __init__(self, username, password):
+    def __init__(self, username, password=None, private_key_path=None):
         """
         Authentication method using `username` and `password`.
         """
         self.username = username
         self.password = password
+        self.private_key_path = private_key_path
 
     def __repr__(self):
-        return '<CLIAuth username: %s password: *****>' % self.username
+        if self.password:
+            return '<CLIAuth username: %s password: *****>' % self.username
+        else:
+            return '<CLIAuth username: %s pkey_path: *****>' % self.username
 
 
 class SteelHead(object):
@@ -62,9 +66,12 @@ class SteelHead(object):
         """
         if self._cli is None:
             # TODO: Use CLICache
-            self._cli = rvbd_cli.RVBD_CLI(hostname=self.host,
-                                          username=self.auth.username,
-                                          password=self.auth.password)
+            self._cli = rvbd_cli.RVBD_CLI(
+                    hostname=self.host,
+                    username=self.auth.username,
+                    password=self.auth.password,
+                    private_key_path=self.auth.private_key_path
+            )
             self._cli.start()
         return self._cli
 
