@@ -14,7 +14,8 @@ from tagging.models import Tag
 
 from steelscript.common.interaction.model import Model
 from steelscript.common.interaction.action import Action
-from steelscript.appfwk.apps.jobs import QueryComplete, QueryContinue
+from steelscript.appfwk.apps.jobs import QueryComplete, QueryContinue, \
+    QueryError
 from steelscript.appfwk.apps.datasource.models import DatasourceTable, \
     TableQueryBase, Table
 from steelscript.appfwk.apps.devices.forms import fields_add_device_selection
@@ -167,6 +168,7 @@ class BandwidthTable(SteelHeadTable):
 class BandwidthQuery(TableQueryBase):
 
     def run(self):
+
         sh = DeviceManager.get_device(self.job.criteria.steelhead_device)
 
         stats = Model.get(sh, feature='stats')
@@ -200,14 +202,12 @@ class SteelHeadCommandQuery(TableQueryBase):
 
     def run(self):
 
-        sh_id = self.job.criteria.dev_id
+        sh_db = self.job.criteria.dev
 
         cmd = self.job.criteria.command
 
-        sh = DeviceManager.get_device(sh_id)
+        sh = DeviceManager.get_device(sh_db.id)
         output = sh.cli.exec_command(cmd, mode=CLIMode.ENABLE)
-
-        sh_db = Device.objects.get(id=sh_id)
 
         return QueryComplete([dict(dev_name=sh_db.name, output=output)])
 
@@ -224,7 +224,7 @@ class BatchSteelHeadTable(AnalysisTable):
         try:
             table = Table.objects.get(name='sh-cmd')
         except ObjectDoesNotExist:
-            table = SteelHeadCommandTable.create('sh-cmd')
+            table = SteelHeadCommandTable.create('sh-cmd', **kwargs)
 
         kwargs['related_tables'] = {'base': table}
 
@@ -251,14 +251,16 @@ class BatchSteelHeadQuery(AnalysisQuery):
 
         dep_jobs = {}
 
-        for sh_db in Device.objects.filter(module="steelhead"):
-            if tag in map(unicode.strip, sh_db.tags.split(',')):
-                criteria = copy.copy(self.job.criteria)
-                criteria.dev_id = sh_db.id
+        for sh_db in Device.tag2devs(tag, module='steelhead', enabled=True):
+            criteria = copy.copy(self.job.criteria)
+            criteria.dev = sh_db
+            job = Job.create(table=cmd_table, criteria=criteria,
+                             parent=self.job)
+            dep_jobs[job.id] = job
 
-                job = Job.create(table=cmd_table, criteria=criteria,
-                                 parent=self.job)
-                dep_jobs[job.id] = job
+        if not dep_jobs:
+            return QueryError("No enabled steelhead "
+                              "devices found with tag '{}'".format(tag))
 
         return QueryContinue(self.collect, jobs=dep_jobs)
 
@@ -267,7 +269,9 @@ class BatchSteelHeadQuery(AnalysisQuery):
 
         for jid, job in jobs.iteritems():
             if job.status == Job.ERROR:
-                raise AnalysisException("%s failed: %s" % (job, job.message))
+                raise AnalysisException(
+                    "Job for host '{}' failed: {}".format(
+                        job.criteria.dev.name, job.message))
 
             subdf = job.data()
             if subdf is None:
@@ -278,4 +282,10 @@ class BatchSteelHeadQuery(AnalysisQuery):
             return QueryComplete(None)
 
         df = pandas.concat(dfs, ignore_index=True)
+
+        def break_line(s):
+            return s.replace('\n', '<br>')
+
+        df['output'] = df['output'].apply(break_line)
+
         return QueryComplete(df)

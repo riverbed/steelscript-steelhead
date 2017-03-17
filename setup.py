@@ -88,7 +88,7 @@ http://pythonhosted.org/steelscript/
                     },
     tests_require=test,
     cmdclass={'test': PyTest},
-    entry_points={'portal.plugins':[
-                      'steelhead = steelscript.steelhead.appfwk.plugin:SteelHeadPlugin'
+    entry_points={'portal.plugins': [
+        'steelhead = steelscript.steelhead.appfwk.plugin:SteelHeadPlugin'
     ]}
 )
