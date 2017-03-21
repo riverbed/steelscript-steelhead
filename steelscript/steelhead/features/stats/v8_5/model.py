@@ -60,6 +60,9 @@ class StatsModel(Model):
         regex = re.compile(pct_pattern)
 
         for stat in parsed:
+            if not parsed[stat]:
+                parsed[stat] = 'None'
+                continue
             match = regex.search(parsed[stat])
             if match:
                 parsed[stat] = float(match.group(1))

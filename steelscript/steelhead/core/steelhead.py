@@ -42,19 +42,17 @@ class SteelHead(object):
     appliance.
     """
 
-    def __init__(self, host, auth=None):
+    def __init__(self, host, port=22, auth=None):
         """
         Establishes a connection to a SteelHead appliance.
 
         :param str host:  Name or IP address of the SteelHead.
         :param auth:  Defines the credentials to use to access the SteelHead.
             It should be an instance of
-            :py:class:`CLIAuth<steelscript.steelhead.core.steelhead.CLIAuth>`
+            :py:class:`UserAuth<steelscript.core.service.UserAuth>`
         """
         self.host = host
-
-        if not isinstance(auth, CLIAuth):
-            raise TypeError("'auth' must be a CLIAuth object")
+        self.port = port
         self.auth = auth
 
         self._cli = None
@@ -67,10 +65,10 @@ class SteelHead(object):
         if self._cli is None:
             # TODO: Use CLICache
             self._cli = rvbd_cli.RVBD_CLI(
-                    hostname=self.host,
-                    username=self.auth.username,
-                    password=self.auth.password,
-                    private_key_path=self.auth.private_key_path
+                hostname=self.host,
+                username=self.auth.username,
+                password=self.auth.password,
+                port=self.port
             )
             self._cli.start()
         return self._cli
