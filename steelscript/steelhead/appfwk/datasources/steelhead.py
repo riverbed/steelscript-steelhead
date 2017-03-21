@@ -251,7 +251,8 @@ class BatchSteelHeadQuery(AnalysisQuery):
 
         dep_jobs = {}
 
-        for sh_db in Device.tag2devs(tag, module='steelhead', enabled=True):
+        for sh_db in Device.objects.filter_by_tag(tag, module='steelhead',
+                                                  enabled=True):
             criteria = copy.copy(self.job.criteria)
             criteria.dev = sh_db
             job = Job.create(table=cmd_table, criteria=criteria,
