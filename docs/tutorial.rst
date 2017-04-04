@@ -68,10 +68,12 @@ Once in the python shell, let's create a SteelHead object:
    >>> auth = UserAuth(username=$username, password=$password)
    >>> sh = steelhead.SteelHead(host=$host, auth=auth)
 
-At first the module of ``steelhead`` and ``service`` are imported.
-Two classes were used, including ``UserAuth`` and ``SteelHead``.
-The object ``auth`` is created by instantiating the ``UserAuth`` class
-with username and password to access an SteelHead appliance. Afterwards,
+At first the module of :py:mod:`steelscript.steelhead.core.steelhead` and
+:py:mod:`steelscript.common.service` are imported. Two classes were used,
+including :py:class:`UserAuth <steelscript.common.service.UserAuth>` and
+:py:class:`SteelHead <steelhead.SteelHead>`. The object ``auth`` is created
+by instantiating the :py:class:`UserAuth <steelscript.common.service.UserAuth>`
+class with username and password to access an SteelHead appliance. Afterwards,
 a SteelHead object is created by instantiating the SteelHead class with
 the hostname or IP address of the SteelHead appliance and the existing
 authentication object. Note that the arguments ``$username`` and ``$password`` 
@@ -79,7 +81,7 @@ need to be replaced with the actual username and password, and the argument
 ``$host`` need to be replaced with the hostname or IP address of the SteelHead
 appliance. 
 
-As soon as the ``SteelHead`` object is created, a connection is
+As soon as the :py:class:`SteelHead <steelhead.SteelHead>` object is created, a connection is
 established to the appliance, and the authentication credentials are
 validated.  If the username and password are not correct, you will
 immediately see an exception.
