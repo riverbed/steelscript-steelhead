@@ -44,10 +44,10 @@ Obtaining a SteelHead Object
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As with any Python code, the first step is to import the module(s) we
-intend to use. The SteelScript code for working with SteelHead
-appliances resides in a module called :py:mod:`steelscript.steelhead.core.steelhead`.
-The main class in this module is :py:class:`SteelHead <steelhead.SteelHead>`.  This object
-represents a connection to a SteelHead appliance.
+intend to use. The SteelScript code for working with SteelHead appliances
+resides in a module called :py:mod:`steelscript.steelhead.core.steelhead`.
+The main class in this module is :py:class:`SteelHead <steelhead.SteelHead>`.
+This object represents a connection to a SteelHead appliance.
 
 To start, start python from the shell or command line:
 
@@ -64,12 +64,13 @@ Once in the python shell, let's create a SteelHead object:
 .. code-block:: python
 
    >>> from steelscript.steelhead.core import steelhead
-   >>> auth = steelhead.CLIAuth(username=$username, password=$password)
+   >>> from steelscript.common.service import UserAuth
+   >>> auth = UserAuth(username=$username, password=$password)
    >>> sh = steelhead.SteelHead(host=$host, auth=auth)
 
-At first the module of steelhead is imported. Two classes were used from
-the steelhead module, including CLIAuth and SteelHead.
-The object auth is created by instantiating the CLIAuth class
+At first the module of ``steelhead`` and ``service`` are imported.
+Two classes were used, including ``UserAuth`` and ``SteelHead``.
+The object ``auth`` is created by instantiating the ``UserAuth`` class
 with username and password to access an SteelHead appliance. Afterwards,
 a SteelHead object is created by instantiating the SteelHead class with
 the hostname or IP address of the SteelHead appliance and the existing
@@ -216,6 +217,7 @@ script below, then walk through the key sections in the example script.
 
    import steelscript.steelhead.core.steelhead as steelhead
 
+   from steelscript.common.service import UserAuth
    from steelscript.common.app import Application
 
    class ShowVersionApp(Application):
@@ -239,8 +241,8 @@ script below, then walk through the key sections in the example script.
                self.parser.error("Password needs to be specified")
 
        def main(self):
-           auth = steelhead.CLIAuth(username=self.options.username,
-                                    password=self.options.password)
+           auth = UserAuth(username=self.options.username,
+                           password=self.options.password)
            sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
            print sh.cli.exec_command("show version")
@@ -298,8 +300,8 @@ is wrong, a help message will be printed out.
 .. code-block:: bash
 
        def main(self):
-           auth = steelhead.CLIAuth(username=self.options.username,
-                                    password=self.options.password)
+           auth = UserAuth(username=self.options.username,
+                           password=self.options.password)
            sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
            print (sh.cli.exec_command("show version"))

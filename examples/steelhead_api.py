@@ -13,12 +13,12 @@ about the version, networking state, current connections (flows) and bandwidth
 statistics of a SteelHead appliance.
 
 Obtaining an SteelHead object requires the same procedures as steelhead_cli.py.
-First of all, the steelhead module needs to be imported, from which two
-classes are used, including CLIAuth and SteelHead. An authentication object
-is created by instantiating the CLIAuth class with user name and password to
-access the SteelHead appliance. Afterwards, a SteelHead object is created by
-instantiating the SteelHead class with the host name or IP address of the
-SteelHead appliance and the existing authentication object.
+First of all, the steelhead module needs to be imported, from which the
+SteelHead class is used. An authentication object is created by instantiating
+the UserAuth class with user name and password to access the SteelHead
+appliance. Afterwards, a SteelHead object is created by instantiating the
+SteelHead class with the host name or IP address of the SteelHead appliance
+and the existing authentication object.
 
 Different as steelhead_cli.py, we use Model/Action class to obtain certain
 information from the SteelHead Appliance. First of all, a Model or Action
@@ -51,6 +51,7 @@ from pprint import pprint
 from steelscript.common.app import Application
 from steelscript.common.interaction.action import Action
 from steelscript.common.interaction.model import Model
+from steelscript.common.service import UserAuth
 
 
 class SteelHeadAPIApp(Application):
@@ -73,8 +74,8 @@ class SteelHeadAPIApp(Application):
             self.parser.error("Password needs to be specified")
 
     def main(self):
-        auth = steelhead.CLIAuth(username=self.options.username,
-                                 password=self.options.password)
+        auth = UserAuth(username=self.options.username,
+                        password=self.options.password)
         sh = steelhead.SteelHead(host=self.options.host, auth=auth)
 
         print("\n********** Version **********\n")
