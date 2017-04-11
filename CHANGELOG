@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+[0.7]
+ * Add single Steelhead appfwk report
+ * Add batch Steelhead appfwk report
+
 [0.6.1]
  * Add support for SSH RSA key authentication instead of password
 
