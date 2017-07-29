@@ -1,6 +1,9 @@
 CHANGELOG
 =========
 
+[0.7.1]
+ * Cleanup method docstrings for better formatting
+
 [0.7]
  * Add single Steelhead appfwk report
  * Add batch Steelhead appfwk report
