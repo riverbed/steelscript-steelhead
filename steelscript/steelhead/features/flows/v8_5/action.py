@@ -26,29 +26,35 @@ class CLI(uidelegation.CLIDelegatee):
         """
         Method to show optimized flows on a Steelhead
 
-        :return: dictionary {
-            'flows_list': [
-                {'app': 'UDPv4',
-                 'destination ip': IPv4Address('10.190.5.2'),
-                 'destination port': 1003,
-                 'percent': 99,
-                 'since': {'day': '10',
-                           'hour': '23',
-                            'min': '58',
-                            'month': '02',
-                            'secs': '01',
-                            'year': '2014'},
-                 'source ip': IPv4Address('10.190.0.1'),
-                 'source port': 406,
-                 'type': 'N'},...],
-            'flows_summary': {
-                'established optimized': {'all': 1, 'v4': 2, 'v6': 3},
-                'packet_mode optimized': {'all': 11, 'v4': 22, 'v6': 33},
-                'rios only': {'all': 1, 'v4': 3, 'v6': 3},
-                'rios scps': {'all': 1, 'v4': 2, 'v6': 3},
-                'scps only': {'all': 11, 'v4': 22, 'v6': 33},
-                'tcp proxy': {'all': 1, 'v4': 2, 'v6': 3},
-                'total': {'all': 11', v4: 40, 'v6': 70}}}
+        :return: dictionary
+
+        .. code-block:: python
+
+             {
+                 'flows_list': [
+                     {'app': 'UDPv4',
+                      'destination ip': IPv4Address('10.190.5.2'),
+                      'destination port': 1003,
+                      'percent': 99,
+                      'since': {'day': '10',
+                                'hour': '23',
+                                'min': '58',
+                                'month': '02',
+                                'secs': '01',
+                                'year': '2014'},
+                      'source ip': IPv4Address('10.190.0.1'),
+                      'source port': 406,
+                      'type': 'N'},...],
+                 'flows_summary': {
+                     'established optimized': {'all': 1, 'v4': 2, 'v6': 3},
+                     'packet_mode optimized': {'all': 11, 'v4': 22, 'v6': 33},
+                     'rios only': {'all': 1, 'v4': 3, 'v6': 3},
+                     'rios scps': {'all': 1, 'v4': 2, 'v6': 3},
+                     'scps only': {'all': 11, 'v4': 22, 'v6': 33},
+                     'tcp proxy': {'all': 1, 'v4': 2, 'v6': 3},
+                     'total': {'all': 11', v4: 40, 'v6': 70}}
+             }
+
         """
 
         return self.model.show_flows(type="optimized")
@@ -57,8 +63,12 @@ class CLI(uidelegation.CLIDelegatee):
         """
         Method to show passthrough flows on a Steelhead
 
-        :return: dictionary {
-            'flows_list': [
+        :return: dictionary
+
+        .. code-block:: python
+
+            {
+             'flows_list': [
                 {'app': 'TCP',
                  'destination ip': IPv4Address('10.190.174.120'),
                  'destination port': 443,
@@ -82,7 +92,8 @@ class CLI(uidelegation.CLIDelegatee):
                  'passthrough unintentional terminated': {'all': 1,
                                                           'v4': 2,
                                                           'v6': 3},
-                 'total': {'all': 11, 'v4': 40, 'v6': 70}}}
+                 'total': {'all': 11, 'v4': 40, 'v6': 70}}
+            }
         """
 
         return self.model.show_flows(type="passthrough")

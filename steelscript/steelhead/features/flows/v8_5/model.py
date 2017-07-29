@@ -90,7 +90,11 @@ class FlowsModel(Model):
                      and tcp-term.
         :type type: string
 
-        :return: dictionary {
+        :return: dictionary
+
+        .. code-block:: python
+
+            {
                 'flows_list': [
                     {'app': 'UDPv4',
                     'destination ip': IPv4Address(u'10.190.5.2'),
@@ -126,7 +130,9 @@ class FlowsModel(Model):
                     'rios scps': {'all': 1, 'v4': 2, 'v6': 3},
                     'scps only': {'all': 11, 'v4': 22, 'v6': 33},
                     'tcp proxy': {'all': 1, 'v4': 2, 'v6': 3},
-                    'total': {'all': 1, 'v4': 2, 'v6': 3}}
+                    'total': {'all': 1, 'v4': 2, 'v6': 3}
+            }
+
         """
 
         cmd = "show flows %s" % type

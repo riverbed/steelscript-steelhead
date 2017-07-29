@@ -21,6 +21,8 @@ class CommonModel(Model):
         """
         Returns parsed output of 'show version'.
 
+        .. code-block:: none
+
             Product name:      rbt_sh
             Product release:   9.0.1
             Build ID:          #19
@@ -36,11 +38,15 @@ class CommonModel(Model):
             CPU load averages: 0.08 / 0.17 / 0.10
 
         :return: Dictionaries of values returned
+
+        .. code-block:: python
+
             {'product name': 'rbt_sh',
              'product release': '9.0.1',
              'build id': '#19',
              'build arch': 'x86_64',
              ...
+
         """
         output = self.cli.exec_command("show version", output_expected=True)
         parsed = cli_parse_basic(output)

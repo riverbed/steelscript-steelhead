@@ -24,7 +24,9 @@ class NetworkingModel(Model):
 
     def show_interfaces(self, interface=None, brief=False):
         """
-        Return parsed output of 'show interfaces <interface> [brief]'
+        Return parsed output of 'show interfaces <interface> [brief]':
+
+        .. code-block:: none
 
             Interface inpath0_0 state
             Up:                 yes
@@ -43,14 +45,19 @@ class NetworkingModel(Model):
         :param brief:  Whether to run just brief output.
         :type brief:  boolean
 
-        :return: List of dictionaries of values returned
-            {'name':         'inpath0_0',
-             'ip address':   IPv4Interface('10.11.100.2/24'),
-             'ipv6 address': IPv6Interface('fe80::5054:ff:fe10:3fe9/64'),
-             'hw address':   EUI('52-54-00-10-3F-E9'),
-             'up':           True,
-             'rx bytes':     42,
-             ...}
+        :return: List of dictionaries of values returned:
+
+        .. code-block:: python
+
+            {
+                'name':         'inpath0_0',
+                'ip address':   IPv4Interface('10.11.100.2/24'),
+                'ipv6 address': IPv6Interface('fe80::5054:ff:fe10:3fe9/64'),
+                'hw address':   EUI('52-54-00-10-3F-E9'),
+                'up':           True,
+                'rx bytes':     42,
+            ...}
+
         """
         cmd = ["show interfaces"]
         if interface:
@@ -63,7 +70,9 @@ class NetworkingModel(Model):
 
     def show_interfaces_configured(self, interface=None):
         """
-        Return parsed output of 'show interfaces <interface> configured'
+        Return parsed output of 'show interfaces <interface> configured':
+
+        .. code-block:: none
 
             Interface inpath0_0 state
             Enabled:            yes
@@ -82,6 +91,9 @@ class NetworkingModel(Model):
         :type interface:  string
 
         :return: List of dictionaries of values returned
+
+        .. code-block:: python
+
             {'name':         'inpath0_0',
              'enabled':      True
              'dhcp':         True

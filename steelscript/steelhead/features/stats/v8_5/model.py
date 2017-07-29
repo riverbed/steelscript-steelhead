@@ -35,15 +35,20 @@ class StatsModel(Model):
         :param frequency: Last period of time to lookback during stats
                           collection.  Options include 1min, 5min, hour, day,
                           week, or month.
-        :type period: string
 
-        :return: dictionary {
-                    'wan data': '5.4 GB',
-                    'lan data': '6 GB',
-                    'data reduction': 10,
-                    'data reduction peak': 95,
-                    'data reduction peak time': '2014/12/05 14:50:00',
-                    'capacity increase': '1.1'}
+        :return: dictionary
+
+        .. code-block:: python
+
+             {
+                 'wan data': '5.4 GB',
+                 'lan data': '6 GB',
+                 'data reduction': 10,
+                 'data reduction peak': 95,
+                 'data reduction peak time': '2014/12/05 14:50:00',
+                 'capacity increase': '1.1'
+             }
+
         """
 
         cmd = "show stats bandwidth %s" % port

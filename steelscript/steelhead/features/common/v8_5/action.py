@@ -27,6 +27,9 @@ class CLI(uidelegation.CLIDelegatee):
         Gets basic software and hardware product information.
 
         :return: Dictionary of values:
+
+        .. code-block:: python
+
             {'name': 'SteelHead',
              'model': 'CX1555',
              'release': '9.0.1'}
