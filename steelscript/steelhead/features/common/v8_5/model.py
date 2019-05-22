@@ -54,7 +54,7 @@ class CommonModel(Model):
         # Force 'product model' to be a string.
         for key in ['product model']:
             if key in parsed:
-                parsed[key] = unicode(parsed[key])
+                parsed[key] = str(parsed[key])
 
         # Remove 'uptime' because we don't know what object to parse it into,
         # along with some others we don't want to format right now.

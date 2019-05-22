@@ -7,7 +7,7 @@
 from __future__ import (unicode_literals, print_function, division,
                         absolute_import)
 
-import mock
+from unittest import mock
 import pytest
 
 from steelscript.common.interaction.action import Action

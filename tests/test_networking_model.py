@@ -9,9 +9,9 @@ from __future__ import (unicode_literals, print_function, division,
 
 import datetime
 import ipaddress
-import mock
 import netaddr
 import pytest
+from unittest import mock
 
 from steelscript.steelhead.features.networking.v8_5.model import \
     NetworkingModel

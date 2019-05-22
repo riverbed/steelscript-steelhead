@@ -7,7 +7,7 @@
 from __future__ import (absolute_import, unicode_literals, print_function,
                         division)
 
-import mock
+from unittest import mock
 import pytest
 from ipaddress import IPv4Address, IPv6Address
 

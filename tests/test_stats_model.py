@@ -7,7 +7,7 @@
 from __future__ import (absolute_import, unicode_literals, print_function,
                         division)
 
-import mock
+from unittest import mock
 import pytest
 
 from steelscript.steelhead.features.stats.v8_5.model import StatsModel\
