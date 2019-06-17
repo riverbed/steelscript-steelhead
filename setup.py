@@ -82,7 +82,9 @@ http://pythonhosted.org/steelscript/
         ('share/doc/steelscript/examples/steelhead', glob('examples/*')),
     ),
 
-    install_requires=['ipaddress', 'netaddr', 'steelscript.cmdline'],
+    install_requires=['ipaddress',
+                      'netaddr',
+                      'steelscript.cmdline>=2.0'],
     extras_require={'test': test,
                     'doc': doc,
                     'dev': [p for p in itertools.chain(test, doc)],
