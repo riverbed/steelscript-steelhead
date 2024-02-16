@@ -37,7 +37,6 @@ doc = ['sphinx']
 
 setup(
     name='steelscript.steelhead',
-    namespace_packages=['steelscript'],
     version='24.2.1',
     author='Riverbed Technology',
     author_email='eng-github@riverbed.com',
